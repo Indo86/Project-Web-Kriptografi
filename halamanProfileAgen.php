@@ -71,7 +71,7 @@
     </div>
     <div class="offcanvas-body">
       <div class="list-group list-group-flush ms-4 mt-lg-4">
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple active" aria-current="true">
+        <a href="halamanDashboardAgen.php" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-speedometer me-3"></i><span>Dashboard</span>
         </a>
         <a href="halamanTugasAgen.php" class="list-group-item list-group-item-action py-2 ripple">
@@ -89,7 +89,7 @@
         <a href="#" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-file-earmark-post me-3"></i><span>Dekripsi Dokumen</span>
         </a>
-        <a href="halamanProfileAgen.php" class="list-group-item list-group-item-action py-2 ripple">
+        <a href="halamanProfileAgen.php" class="list-group-item list-group-item-action py-2 ripple active" aria-current="true">
           <i class="bi bi-person-bounding-box me-3"></i><span>Profil</span>
         </a>
         <div class="d-grid gap-2 col-10 mx-auto mt-5">
@@ -117,64 +117,65 @@
   <!-- Main Layout -->
   <div id="main">
     <div class="page-heading mb-4">
-      <h1>Dashboard</h1>
+      <h1>Profile Agen</h1>
     </div>
-    <div class="page-content">
-    <div class="row dashboard-card">
-      <div class="col-4 card-dashboard">
-        <!-- card jumlah tugas -->
-        <div class="card text-bg-primary mb-3" style="max-width: 540px;">
-          <div class="row g-0">
-            <div class="col-md-4 d-flex flex-column align-items-center justify-content-center">
-                <h3>10</h3>
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h3 class="card-title">Tugas</h3>
-                <p>Task on progress</p>
+    <div class="page-content d-flex justify-content-center">
+    <!-- <div class="row"> -->
+  <!-- <div class="col-3">
+     
+  </div> -->
+  <div class="col-8">
+  <div class="card shadow-sm">
+  <div class="card-header bg-primary text-center">
+    <h4 class="text-light">Profil Agen</h4>
+      </div>
+          <div class="card-body">
+            <div class="col-12">
+                  <div class="img-profile d-flex justify-content-center mb-3">
+                      <div class="card shadow-sm" style="width: 20rem;">
+                          <img src="Assets/img/person.jpg" class="card-img-top" alt="...">
+                      </div>
+                  </div>
+            
+                   <div class="row">
+                      <div class=" col-5 grid gap-4" >
+                        <p class="fw-bold">NIK</p>
+                        <p class="fw-bold">Nama</p>
+                        <p class="fw-bold">Tempat/Tanggal lahir</p>
+                        <p class="fw-bold">jenis Kelamin</p>
+                        <p class="fw-bold">Alamat</p>
+                        <!-- <p class="fw-bold ms-3">RT/RW</p>
+                        <p class="fw-bold ms-3">Kel/Desa</p>
+                        <p class="fw-bold ms-3">Kecamatan</p>
+                        <p class="fw-bold">Setatus Perkawinan</p>
+                        <p class="fw-bold">Pekerjaan</p>
+                        <p class="fw-bold">Kewarganegaraan</p>
+                        <p class="fw-bold">Gol Darah</p> -->
+                      </div>
+                      <div class="col-7">
+                        <p class="fw">: </p>
+                        <p class="fw">: </p>
+                        <p class="fw">: </p>
+                        <p class="fw">: </p>
+                        <p class="fw">: </p>
+                        <!-- <p class="fw">: </p>
+                        <p class="fw">: </p>
+                        <p class="fw">: </p>
+                        <p class="fw">: </p>
+                        <p class="fw">: </p>
+                        <p class="fw">: </p>
+                        <p class="fw">: </p> -->
+                      </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
         </div>
-
       </div>
-      <!-- Jumlah pengumuman  -->
-      <div class="col-4 card-dashboard">
-        <!-- card jumlah Pengumuman -->
-        <div class="card text-bg-warning mb-3" style="max-width: 540px;">
-          <div class="row g-0">
-            <div class="col-md-4 d-flex flex-column align-items-center justify-content-center">
-                <h3>15</h3>
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h3 class="card-title">Pengumuman</h3>
-                <p>Top secret anouncement</p>
-              </div>
-            </div>
-          </div>
-        </div>
+  </div>
+</div>
+<!-- Akhir Profil User -->
 
-      </div>
-      <!-- Jumlah Laporan  -->
-      <div class="col-4 card-dashboard">
-        <!-- card jumlah Laporan -->
-        <div class="card text-bg-danger mb-3" style="max-width: 540px;">
-          <div class="row g-0">
-            <div class="col-md-4 d-flex flex-column align-items-center justify-content-center">
-                <h3>25</h3>
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h3 class="card-title">Arsip Tugas</h3>
-                <p>Top secret archive tasks</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
     </div>
   </div>
   <!-- End Main Layout -->
