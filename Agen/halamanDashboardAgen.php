@@ -71,14 +71,14 @@
     </div>
     <div class="offcanvas-body">
       <div class="list-group list-group-flush ms-4 mt-lg-4">
-        <a href="halamanDashboardAgen.php" class="list-group-item list-group-item-action py-2 ripple" >
+        <a href="#" class="list-group-item list-group-item-action py-2 ripple active" aria-current="true">
           <i class="bi bi-speedometer me-3"></i><span>Dashboard</span>
         </a>
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple active" aria-current="true">
+        <a href="halamanTugasAgen.php" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-list-task me-3"></i><span>Tugas</span>
         </a>
         <a href="halamanArsipTugasAgen.php" class="list-group-item list-group-item-action py-2 ripple">
-        <i class="bi bi-archive-fill me-3"></i><span>Arsip Tugas</span>
+          <i class="bi bi-archive-fill me-3"></i><span>Arsip Tugas</span>
         </a>
         <a href="halamanPengumumanAgen.php" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-megaphone-fill me-3"></i><span>Pengumuman</span>
@@ -89,7 +89,7 @@
         <a href="#" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-file-earmark-post me-3"></i><span>Dekripsi Dokumen</span>
         </a>
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple" >
+        <a href="halamanProfileAgen.php" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-person-bounding-box me-3"></i><span>Profil</span>
         </a>
         <div class="d-grid gap-2 col-10 mx-auto mt-5">
@@ -108,7 +108,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <a class="navbar-brand" href="#">
-        <img src="Assets/img/mask.png" alt="Logo" width="35" height="35" class="d-inline-block align-text-center">
+        <img src="../Assets/img/mask.png" alt="Logo" width="35" height="35" class="d-inline-block align-text-center">
         Asosiasi Intelijen Negara Barat Daya
       </a>
     </div>
@@ -117,38 +117,64 @@
   <!-- Main Layout -->
   <div id="main">
     <div class="page-heading mb-4">
-      <h1>Tugas Agen</h1>
+      <h1>Dashboard</h1>
     </div>
     <div class="page-content">
-    <table class="table">
-        <thead class="table-primary">
-          <tr>
-            <th scope="col">No</th>
-            <th scope="col">Tanggal</th>
-            <th scope="col">Judul</th>
-            <th scope="col">Perwira</th>
-            <th scope="col">Status</th>
-            <th scope="col">Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>11-11-2024</td>
-            <td>Operasi Tangkap Tangan Koruptor</td>
-            <td>Mayor Jend. Agus Subiyanto</td>
-            <td>
-              <span class="badge bg-primary">Pending</span>
-            </td>
-            <td>
-            <a href="#" style="text-decoration:none">
-                <button type="button" class="btn btn-outline-warning">Kerjakan</button>
-            </a>
-            </td>
-          </tr>
+    <div class="row dashboard-card">
+      <div class="col-4 card-dashboard">
+        <!-- card jumlah tugas -->
+        <div class="card text-bg-primary mb-3" style="max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4 d-flex flex-column align-items-center justify-content-center">
+                <h3>10</h3>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h3 class="card-title">Tugas</h3>
+                <p>Task on progress</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        </tbody>
-      </table>
+      </div>
+      <!-- Jumlah pengumuman  -->
+      <div class="col-4 card-dashboard">
+        <!-- card jumlah Pengumuman -->
+        <div class="card text-bg-warning mb-3" style="max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4 d-flex flex-column align-items-center justify-content-center">
+                <h3>15</h3>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h3 class="card-title">Pengumuman</h3>
+                <p>Top secret anouncement</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- Jumlah Laporan  -->
+      <div class="col-4 card-dashboard">
+        <!-- card jumlah Laporan -->
+        <div class="card text-bg-danger mb-3" style="max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4 d-flex flex-column align-items-center justify-content-center">
+                <h3>25</h3>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h3 class="card-title">Arsip Tugas</h3>
+                <p>Top secret archive tasks</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
     </div>
   </div>
   <!-- End Main Layout -->

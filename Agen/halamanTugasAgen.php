@@ -6,12 +6,12 @@
     <title>Halam Utama Agen</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" />
-  <!-- Google Fonts Roboto -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
-  <!-- MDB -->
-  <link rel="stylesheet" href="css/bootstrap-side-navbar.min.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" />
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
+    <!-- MDB -->
+    <link rel="stylesheet" href="css/bootstrap-side-navbar.min.css" />
   </head>
   <style>
     /* Sidebar */
@@ -74,13 +74,13 @@
         <a href="halamanDashboardAgen.php" class="list-group-item list-group-item-action py-2 ripple" >
           <i class="bi bi-speedometer me-3"></i><span>Dashboard</span>
         </a>
-        <a href="halamanTugasAgen.php" class="list-group-item list-group-item-action py-2 ripple">
+        <a href="#" class="list-group-item list-group-item-action py-2 ripple active" aria-current="true">
           <i class="bi bi-list-task me-3"></i><span>Tugas</span>
         </a>
         <a href="halamanArsipTugasAgen.php" class="list-group-item list-group-item-action py-2 ripple">
         <i class="bi bi-archive-fill me-3"></i><span>Arsip Tugas</span>
         </a>
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple active" aria-current="true">
+        <a href="halamanPengumumanAgen.php" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-megaphone-fill me-3"></i><span>Pengumuman</span>
         </a>
         <a href="#" class="list-group-item list-group-item-action py-2 ripple">
@@ -89,7 +89,7 @@
         <a href="#" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-file-earmark-post me-3"></i><span>Dekripsi Dokumen</span>
         </a>
-        <a href="halamanProfileAgen.php" class="list-group-item list-group-item-action py-2 ripple">
+        <a href="halamanProfileAgen.php" class="list-group-item list-group-item-action py-2 ripple" >
           <i class="bi bi-person-bounding-box me-3"></i><span>Profil</span>
         </a>
         <div class="d-grid gap-2 col-10 mx-auto mt-5">
@@ -108,7 +108,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <a class="navbar-brand" href="#">
-        <img src="Assets/img/mask.png" alt="Logo" width="35" height="35" class="d-inline-block align-text-center">
+        <img src="../Assets/img/mask.png" alt="Logo" width="35" height="35" class="d-inline-block align-text-center">
         Asosiasi Intelijen Negara Barat Daya
       </a>
     </div>
@@ -117,7 +117,7 @@
   <!-- Main Layout -->
   <div id="main">
     <div class="page-heading mb-4">
-      <h1>Pengumuman Agen</h1>
+      <h1>Tugas Agen</h1>
     </div>
     <div class="page-content">
     <table class="table">
@@ -125,8 +125,9 @@
           <tr>
             <th scope="col">No</th>
             <th scope="col">Tanggal</th>
-            <th scope="col">Judul Pengumuman</th>
+            <th scope="col">Judul</th>
             <th scope="col">Perwira</th>
+            <th scope="col">Status</th>
             <th scope="col">Aksi</th>
           </tr>
         </thead>
@@ -137,8 +138,11 @@
             <td>Operasi Tangkap Tangan Koruptor</td>
             <td>Mayor Jend. Agus Subiyanto</td>
             <td>
+              <span class="badge bg-primary">Pending</span>
+            </td>
+            <td>
             <a href="#" style="text-decoration:none">
-                <button type="button" class="btn btn-outline-primary">Lihat</button>
+                <button type="button" class="btn btn-outline-warning">Kerjakan</button>
             </a>
             </td>
           </tr>

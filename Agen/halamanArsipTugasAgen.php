@@ -108,7 +108,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <a class="navbar-brand" href="#">
-        <img src="Assets/img/mask.png" alt="Logo" width="35" height="35" class="d-inline-block align-text-center">
+        <img src="../Assets/img/mask.png" alt="Logo" width="35" height="35" class="d-inline-block align-text-center">
         Asosiasi Intelijen Negara Barat Daya
       </a>
     </div>
