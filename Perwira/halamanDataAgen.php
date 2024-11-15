@@ -140,7 +140,7 @@ if(!isset($_SESSION["loginPerwira"])){
     </div>
     <div class="page-content">
     <div class="button-tambah d-flex justify-content-end mb-3">
-          <a href="#" style="text-decoration:none">
+          <a href="halamanTambahDataAgen.php" style="text-decoration:none">
                 <button type="button" class="btn btn-outline-secondary"><i class="bi bi-person-plus-fill ms-0 me-2"></i>Tambah Agen</button>
             </a>
     </div>
@@ -167,13 +167,13 @@ if(!isset($_SESSION["loginPerwira"])){
             <td><?= $agen['penempatan'] ?></td>
             <td><?= $agen['jenis_kelamin'] ?></td>
             <td>
-            <a href="#" style="text-decoration:none">
+            <a href="halamanDetailDataAgen.php?id=<?= $agen['id']?>" style="text-decoration:none">
                 <button type="button" class="btn btn-outline-primary">Detail</button>
             </a>
-            <a href="#" style="text-decoration:none">
+            <a href="halamanEditDataAgen.php?id=<?= $agen['id']?>" style="text-decoration:none">
                 <button type="button" class="btn btn-outline-warning">Edit</button>
             </a>
-            <a href="#" style="text-decoration:none">
+            <a href="hapusDataAgen.php?id=<?= $agen['id']?>" style="text-decoration:none">
                 <button type="button" class="btn btn-outline-danger">Hapus</button>
             </a>
             </td>
