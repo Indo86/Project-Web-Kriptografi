@@ -1,30 +1,32 @@
 <?php 
-// session_start();
-// include("connect.php");
+session_start();
+include("connect.php");
 
-// // login admin
-// if(isset($_POST["loginA"])){
-//   $keyAes = 'makanmakanmakanp';
-//   $ivAes = '12345678abcdefgh';;
-//   $chiperAlgo= 'AES-128-CBC';
-//   $options = 0;
+// login perwira
+if(isset($_POST["loginPerwira"])){
+  // $keyAes = 'makanmakanmakanp';
+  // $ivAes = '12345678abcdefgh';;
+  // $chiperAlgo= 'AES-128-CBC';
+  // $options = 0;
 
-//   $nip = hash('sha256', $_POST["nip"]);
-//   $password = openssl_encrypt($_POST["password"], $chiperAlgo, $keyAes, $options, $ivAes);
+  // $nip = hash('sha256', $_POST["nip"]);
+  // $password = openssl_encrypt($_POST["password"], $chiperAlgo, $keyAes, $options, $ivAes);
 
-//   $queri = "SELECT * FROM admin WHERE hash_nip = '$nip' AND password = '$password'";
-//   $result = mysqli_query($conn, $queri);
+  $id = $_POST["id"];
+  $password = $_POST["password"];
+  $queri = "SELECT * FROM perwira WHERE id = '$id' AND password = '$password'";
+  $result = mysqli_query($conn, $queri);
 
-//   if(mysqli_num_rows($result) > 0){
+  if(mysqli_num_rows($result) > 0){
 
-//     $_SESSION["loginA"] = true;
-//     $_SESSION["nip"] = $_POST["nip"];
+    $_SESSION["loginPerwira"] = true;
+    $_SESSION["id"] = $_POST["id"];
   
-//     header("Location: halamanDataPenduduk.php");
-//     exit;
-//   }
-//   $error = true;
-// }
+    header("Location: Perwira/halamanDashboardPerwira.php");
+    exit;
+  }
+  $error = true;
+}
 
 
 ?>
@@ -33,7 +35,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login Admin</title>
+    <title>Login Perwira</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   </head>
@@ -121,13 +123,13 @@
           </div>
           <div class="card-body p-5">
             <h3 class="mb-4 text-center">Masuk</h3>
-              <!-- <?php // if(isset($error)){ ?>
-                <p style="color: red; font-style: itaitalic ; "> NIP / Password salah!! </p>
-                <?php // } ?> -->
+              <?php if(isset($error)){ ?>
+                <p style="color: red; font-style: itaitalic ; "> id / Password salah!! </p>
+                <?php } ?>
 
             <div class="form-outline mb-4">
-            <label class="form-label" for="nip">NIP</label>
-              <input type="text" id="nip" name="nip" class="form-control form-control-lg" />
+            <label class="form-label" for="id">ID</label>
+              <input type="text" id="id" name="id" class="form-control form-control-lg" />
             </div>
 
             <div class="form-outline mb-5">
@@ -137,7 +139,7 @@
 
             <!-- Checkbox -->
             <div class="text-center">
-            <button class="btn login btn-primary btn-lg btn-block d-grip col-12 mx-auto text-center-round" name="loginA">Login</button>
+            <button class="btn login btn-primary btn-lg btn-block d-grip col-12 mx-auto text-center-round" name="loginPerwira">Login</button>
             
             <hr class="my-4">
             <p>Belum punya akun admin? Registrasi <a href="registrasiAdmin.php" class="link-info">di sini</a></p>

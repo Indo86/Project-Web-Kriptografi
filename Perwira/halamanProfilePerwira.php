@@ -1,3 +1,23 @@
+<?php 
+session_start();
+include("../connect.php");
+$id = $_SESSION['id'];
+
+if(!isset($_SESSION["loginPerwira"])){
+  header("Location: ../loginPerwira.php");
+  exit;
+}
+
+
+$queriPerwira = "SELECT * FROM perwira WHERE id = '$id'";
+$result = mysqli_query($conn, $queriPerwira);
+$perwira = mysqli_fetch_assoc($result);
+
+
+?>
+
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -142,11 +162,11 @@
             
                    <div class="row">
                       <div class=" col-5 grid gap-4" >
-                        <p class="fw-bold">NIK</p>
+                        <p class="fw-bold">ID</p>
                         <p class="fw-bold">Nama</p>
-                        <p class="fw-bold">Tempat/Tanggal lahir</p>
-                        <p class="fw-bold">jenis Kelamin</p>
-                        <p class="fw-bold">Alamat</p>
+                        <p class="fw-bold">Jabatan</p>
+                        <p class="fw-bold">Jenis Kelamin</p>
+                        <p class="fw-bold">Wilayah Tugas</p>
                         <!-- <p class="fw-bold ms-3">RT/RW</p>
                         <p class="fw-bold ms-3">Kel/Desa</p>
                         <p class="fw-bold ms-3">Kecamatan</p>
@@ -156,11 +176,11 @@
                         <p class="fw-bold">Gol Darah</p> -->
                       </div>
                       <div class="col-7">
-                        <p class="fw">: </p>
-                        <p class="fw">: </p>
-                        <p class="fw">: </p>
-                        <p class="fw">: </p>
-                        <p class="fw">: </p>
+                        <p class="fw">: <?= $perwira['id']?></p>
+                        <p class="fw">: <?= $perwira['nama']?></p>
+                        <p class="fw">: <?= $perwira['jabatan']?></p>
+                        <p class="fw">: <?= $perwira['jenis_kelamin']?></p>
+                        <p class="fw">: <?= $perwira['wilayah_tugas']?> </p>
                         <!-- <p class="fw">: </p>
                         <p class="fw">: </p>
                         <p class="fw">: </p>

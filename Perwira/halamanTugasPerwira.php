@@ -1,3 +1,19 @@
+<?php 
+session_start();
+include("../connect.php");
+$id = $_SESSION['id'];
+
+if(!isset($_SESSION["loginPerwira"])){
+  header("Location: ../loginPerwira.php");
+  exit;
+}
+
+
+?>
+
+
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -132,7 +148,8 @@
         <thead class="table-primary">
           <tr>
             <th scope="col">No</th>
-            <th scope="col">Tanggal</th>
+            <th scope="col">Tanggal Mulai</th>
+            <th scope="col">Tanggal Selesai</th>
             <th scope="col">Judul</th>
             <th scope="col">Agent Penanggung Jawab</th>
             <th scope="col">Status</th>
@@ -140,13 +157,30 @@
           </tr>
         </thead>
         <tbody>
+          <?php 
+          $no = 1;
+          $queriTugas = "SELECT * FROM tugas WHERE id_perwira = '$id'";
+          $resultTugas = mysqli_query($conn, $queriTugas);
+
+
+          while( $tugas = mysqli_fetch_assoc($resultTugas)){
+            // digunakan untuk mencari agen yang menerima tugas
+            $idPenerimaTugas = $tugas['id_agen'];
+            $queriAgen = "SELECT * FROM agen WHERE id = '$idPenerimaTugas'";
+            $resultAgen = mysqli_query($conn, $queriAgen);
+            $agen = mysqli_fetch_assoc($resultAgen);
+          
+          ?>
           <tr>
-            <th scope="row">1</th>
-            <td>11-11-2024</td>
-            <td>Operasi Tangkap Tangan Koruptor</td>
-            <td>Agent Bento</td>
+            <th scope="row"><?= $no++ ?></th>
+            <td><?= $tugas['tanggal_mulai'] ?></td>
+            <td><?= $tugas['tanggal_selesai'] ?></td>
+            <td><?= $tugas['judul'] ?></td>
             <td>
-              <span class="badge bg-primary">Pending</span>
+            <?= $agen['nama_alias'];?>
+            </td>
+            <td>
+              <span class="badge bg-primary"> <?= $tugas['status'] ?> </span>
             </td>
             <td>
             <a href="#" style="text-decoration:none">
@@ -160,7 +194,7 @@
             </a>
             </td>
           </tr>
-
+            <?php } ?>
         </tbody>
       </table>
     </div>

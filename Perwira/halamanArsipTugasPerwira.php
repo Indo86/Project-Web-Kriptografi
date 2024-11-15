@@ -1,3 +1,18 @@
+<?php 
+session_start();
+include("../connect.php");
+$id = $_SESSION['id'];
+
+if(!isset($_SESSION["loginPerwira"])){
+  header("Location: ../loginPerwira.php");
+  exit;
+}
+
+
+?>
+
+
+
 <!doctype html>
 <html lang="en">
   <head>

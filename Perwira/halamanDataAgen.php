@@ -1,3 +1,19 @@
+<?php 
+session_start();
+include("../connect.php");
+$id = $_SESSION['id'];
+
+if(!isset($_SESSION["loginPerwira"])){
+  header("Location: ../loginPerwira.php");
+  exit;
+}
+
+?>
+
+
+
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -139,11 +155,17 @@
           </tr>
         </thead>
         <tbody>
+          <?php 
+          $no = 1;
+          $queriAgen = "SELECT * FROM agen";
+          $result = mysqli_query($conn, $queriAgen);
+          while($agen = mysqli_fetch_assoc($result)){
+          ?>
           <tr>
-            <th scope="row">1</th>
-            <td>Sunaryo</td>
-            <td>Nganjuk Timur</td>
-            <td>Laki-laki</td>
+            <th scope="row"><?= $no++;?></th>
+            <td><?= $agen['nama_alias'] ?></td>
+            <td><?= $agen['penempatan'] ?></td>
+            <td><?= $agen['jenis_kelamin'] ?></td>
             <td>
             <a href="#" style="text-decoration:none">
                 <button type="button" class="btn btn-outline-primary">Detail</button>
@@ -156,7 +178,7 @@
             </a>
             </td>
           </tr>
-
+          <?php } ?>
         </tbody>
       </table>
     </div>

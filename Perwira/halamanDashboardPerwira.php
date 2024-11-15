@@ -1,3 +1,34 @@
+<?php 
+session_start();
+include("../connect.php");
+$id = $_SESSION['id'];
+
+if(!isset($_SESSION["loginPerwira"])){
+  header("Location: ../loginPerwira.php");
+  exit;
+}
+
+
+
+$queriPerwira = "SELECT * FROM perwira WHERE id = '$id'";
+$result = mysqli_query($conn, $queriPerwira);
+$perwira = mysqli_fetch_assoc($result);
+
+
+// Query untuk menghitung jumlah data
+$queriJumlahTugas = "SELECT COUNT(*) AS totalTugas FROM tugas  WHERE id_perwira = '$id'";
+$resultJumlahTugas = mysqli_query($conn,$queriJumlahTugas );
+$jumlahTugas = mysqli_fetch_assoc($resultJumlahTugas);
+
+
+$queriJumlahAgen = "SELECT COUNT(*) AS totalAgen FROM agen";
+$resultJumlahAgen = mysqli_query($conn,$queriJumlahAgen );
+$jumlahAgen = mysqli_fetch_assoc($resultJumlahAgen);
+
+?>
+
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -120,7 +151,7 @@
   <!-- Main Layout -->
   <div id="main">
     <div class="page-heading mb-4">
-      <h1>Dashboard</h1>
+      <h1>Dashboard Komandan <?= $perwira['nama'] ?></h1>
     </div>
     <div class="page-content">
     <div class="row dashboard-card">
@@ -129,7 +160,7 @@
         <div class="card text-bg-primary mb-3" style="max-width: 540px;">
           <div class="row g-0">
             <div class="col-md-4 d-flex flex-column align-items-center justify-content-center">
-                <h3>10</h3>
+                <h3><?= $jumlahAgen['totalAgen'] ?></h3>
             </div>
             <div class="col-md-8">
               <div class="card-body">
@@ -165,12 +196,13 @@
         <div class="card text-bg-danger mb-3" style="max-width: 540px;">
           <div class="row g-0">
             <div class="col-md-4 d-flex flex-column align-items-center justify-content-center">
-                <h3>25</h3>
+                <h3><?= $jumlahTugas['totalTugas'] ?></h3>
+               
             </div>
             <div class="col-md-8">
               <div class="card-body">
-                <h3 class="card-title">Arsip Tugas</h3>
-                <p>Top secret archive tasks</p>
+                <h3 class="card-title">Tugas</h3>
+                <p>Top secret tasks</p>
               </div>
             </div>
           </div>
