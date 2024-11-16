@@ -126,9 +126,9 @@ $jumlahAgen = mysqli_fetch_assoc($resultJumlahAgen);
         <a href="halamanProfilePerwira.php" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-person-bounding-box me-3"></i><span>Profil</span>
         </a>
-        <div class="d-grid gap-2 col-10 mx-auto mt-5">
+        <a href="logoutPerwira.php" style="text-decoration:none;" class="d-grid gap-2 col-10 mx-auto mt-5">
           <button class="btn btn-danger text-light" type="button">Log Out</button>
-        </div>
+        </a>
       </div>
     </div>
   </div>
