@@ -142,7 +142,7 @@ if(isset($_POST["loginPerwira"])){
             <button class="btn login btn-primary btn-lg btn-block d-grip col-12 mx-auto text-center-round" name="loginPerwira">Login</button>
             
             <hr class="my-4">
-            <p>Belum punya akun admin? Registrasi <a href="registrasiAdmin.php" class="link-info">di sini</a></p>
+           
               </div>
           </div>
         </div>

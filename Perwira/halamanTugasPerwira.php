@@ -9,6 +9,64 @@ if(!isset($_SESSION["loginPerwira"])){
 }
 
 
+
+// Fungsi dekripsi AES
+function decryptAES($data, $key, $iv, $chiperAlgo, $options) {
+  return openssl_decrypt($data, $chiperAlgo, $key, $options, $iv);
+}
+
+
+function caesarEncrypt($data, $shift) {
+  $result = "";
+  for ($i = 0; $i < strlen($data); $i++) {
+      $char = $data[$i];
+      if (ctype_alpha($char)) {
+          $shifted = ord($char) + $shift;
+          if (ctype_lower($char)) {
+              if ($shifted > ord('z')) {
+                  $shifted -= 26;
+              }
+          } elseif (ctype_upper($char)) {
+              if ($shifted > ord('Z')) {
+                  $shifted -= 26;
+              }
+          }
+          $result .= chr($shifted);
+      } else {
+          $result .= $char;
+      }
+  }
+  return $result;
+}
+
+// // Fungsi dekripsi Caesar Cipher
+function decryptCaesar($data, $shift) {
+  return caesarEncrypt($data, 26 - $shift);  // Dekripsi dengan menggeser terbalik
+}
+
+// Super dekripsi (AES + Caesar Cipher)
+function superDecrypt($data, $key, $iv, $chiperAlgo, $options, $caesarShift) {
+  // Dekripsi pertama dengan Caesar Cipher
+  $decryptedCaesar = decryptCaesar($data, $caesarShift);
+  
+  // Dekripsi kedua dengan AES
+  return decryptAES($decryptedCaesar, $key, $iv, $chiperAlgo, $options);
+}
+
+
+
+$keyAes = 'makanmakanmakanp';
+$ivAes = '12345678abcdefgh';
+$chiperAlgo = 'AES-128-CBC';
+$options = 0;
+$caesarShift = 3; // Misalnya geser 3 untuk Caesar Cipher
+
+// tanggal mulai
+// target selesai
+// judul
+// anggen pelaksana
+
+
 ?>
 
 
@@ -140,7 +198,7 @@ if(!isset($_SESSION["loginPerwira"])){
     </div>
     <div class="page-content">
     <div class="button-tambah d-flex justify-content-end mb-3">
-          <a href="#" style="text-decoration:none">
+          <a href="halamanTambahDataTugas.php" style="text-decoration:none">
                 <button type="button" class="btn btn-outline-secondary"><i class="bi bi-file-earmark-plus ms-0 me-2"></i>Buat Tugas</button>
             </a>
     </div>
@@ -149,9 +207,9 @@ if(!isset($_SESSION["loginPerwira"])){
           <tr>
             <th scope="col">No</th>
             <th scope="col">Tanggal Mulai</th>
-            <th scope="col">Tanggal Selesai</th>
+            <th scope="col">Target Selesai</th>
             <th scope="col">Judul</th>
-            <th scope="col">Agent Penanggung Jawab</th>
+            <th scope="col">Agent Pelaksana</th>
             <th scope="col">Status</th>
             <th scope="col">Aksi</th>
           </tr>
@@ -175,21 +233,18 @@ if(!isset($_SESSION["loginPerwira"])){
             <th scope="row"><?= $no++ ?></th>
             <td><?= $tugas['tanggal_mulai'] ?></td>
             <td><?= $tugas['tanggal_selesai'] ?></td>
-            <td><?= $tugas['judul'] ?></td>
+            <td><?= superDecrypt( $tugas['judul'], $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift) ?></td>
             <td>
-            <?= $agen['nama_alias'];?>
+            <?= openssl_decrypt($agen['nama_alias'],$chiperAlgo,$keyAes, $options, $ivAes)?>
             </td>
             <td>
               <span class="badge bg-primary"> <?= $tugas['status'] ?> </span>
             </td>
             <td>
-            <a href="#" style="text-decoration:none">
+            <a href="halamanDetailDataTugas.php?kode=<?= $tugas['kode'] ?>" style="text-decoration:none">
                 <button type="button" class="btn btn-outline-primary">Detail</button>
             </a>
-            <a href="#" style="text-decoration:none">
-                <button type="button" class="btn btn-outline-warning">Edit</button>
-            </a>
-            <a href="#" style="text-decoration:none">
+            <a href="hapusDataTugas.php?kode=<?= $tugas['kode']?>" style="text-decoration:none">
                 <button type="button" class="btn btn-outline-danger">Hapus</button>
             </a>
             </td>

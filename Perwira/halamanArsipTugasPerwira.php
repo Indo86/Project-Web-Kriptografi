@@ -134,8 +134,8 @@ if(!isset($_SESSION["loginPerwira"])){
     </div>
   </nav>
 </header>
-  <!-- Main Layout -->
-  <div id="main">
+<!-- Main Layout -->
+<div id="main">
     <div class="page-heading mb-4">
       <h1>Arsip Tugas Perwira</h1>
     </div>
@@ -144,32 +144,38 @@ if(!isset($_SESSION["loginPerwira"])){
         <thead class="table-primary">
           <tr>
             <th scope="col">No</th>
-            <th scope="col">Tanggal</th>
+            <th scope="col">Tanggal Mulai</th>
+            <th scope="col">Tanggal Selesai</th>
             <th scope="col">Judul</th>
-            <th scope="col">Agent Penanggung Jawab</th>
             <th scope="col">Status</th>
             <th scope="col">Aksi</th>
           </tr>
         </thead>
         <tbody>
+          <?php 
+          $no = 1;
+          $queriTugas = "SELECT * FROM arsip_tugas WHERE id_perwira = '$id'";
+          $resultTugas = mysqli_query($conn, $queriTugas);
+
+
+          while( $tugas = mysqli_fetch_assoc($resultTugas)){
+          
+          ?>
           <tr>
-            <th scope="row">1</th>
-            <td>11-11-2024</td>
-            <td>Operasi Tangkap Tangan Koruptor</td>
-            <td>Agent Bento</td>
+            <th scope="row"><?= $no++ ?></th>
+            <td><?= $tugas['tanggal_mulai'] ?></td>
+            <td><?= $tugas['tanggal_selesai'] ?></td>
+            <td><?= $tugas['judul'] ?></td>
             <td>
-              <span class="badge bg-primary">Success</span>
+              <span class="badge bg-primary"> <?= $tugas['status'] ?> </span>
             </td>
             <td>
             <a href="#" style="text-decoration:none">
                 <button type="button" class="btn btn-outline-primary">Detail</button>
             </a>
-            <a href="#" style="text-decoration:none">
-                <button type="button" class="btn btn-outline-danger">Hapus</button>
-            </a>
             </td>
           </tr>
-
+            <?php } ?>
         </tbody>
       </table>
     </div>

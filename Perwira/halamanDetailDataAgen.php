@@ -9,6 +9,10 @@ if(!isset($_SESSION["loginPerwira"])){
   exit;
 }
 
+$keyAes = 'makanmakanmakanp';
+$ivAes = '12345678abcdefgh';;
+$chiperAlgo= 'AES-128-CBC';
+$options = 0;
 
 $queriAgen = "SELECT * FROM agen WHERE id = '$id_agen'";
 $result = mysqli_query($conn, $queriAgen);
@@ -58,7 +62,7 @@ $agen = mysqli_fetch_assoc($result);
         </div>
 
         <div class="col-4">
-        <h4 class="text-light text-center">Profil Agen <?= $agen['nama_alias'] ?></h4>
+        <h4 class="text-light text-center">Profil Agen <?= openssl_decrypt($agen['nama_alias'],$chiperAlgo,$keyAes, $options, $ivAes)?></h4>
         </div>
         <div class="col-4">
 
@@ -69,38 +73,27 @@ $agen = mysqli_fetch_assoc($result);
             <div class="col-12">
                   <div class="img-profile d-flex justify-content-center mb-3">
                       <div class="card shadow-sm" style="width: 20rem;">
-                          <img src="../Assets/img/person.jpg" class="card-img-top" alt="...">
+                          <img src="../Assets/img/<?= openssl_decrypt($agen['gambar'],$chiperAlgo,$keyAes, $options, $ivAes)?>" class="card-img-top" alt="...">
                       </div>
                   </div>
             
                    <div class="row">
                       <div class=" col-5 grid gap-4" >
                         <p class="fw-bold">ID</p>
-                        <p class="fw-bold">Nama</p>
+                        <p class="fw-bold">Nama Asli</p>
+                        <p class="fw-bold">Nama Samaran</p>
                         <p class="fw-bold">Jabatan</p>
                         <p class="fw-bold">Jenis Kelamin</p>
                         <p class="fw-bold">Wilayah Tugas</p>
-                        <!-- <p class="fw-bold ms-3">RT/RW</p>
-                        <p class="fw-bold ms-3">Kel/Desa</p>
-                        <p class="fw-bold ms-3">Kecamatan</p>
-                        <p class="fw-bold">Setatus Perkawinan</p>
-                        <p class="fw-bold">Pekerjaan</p>
-                        <p class="fw-bold">Kewarganegaraan</p>
-                        <p class="fw-bold">Gol Darah</p> -->
+
                       </div>
                       <div class="col-7">
-                        <p class="fw">: <?= $agen['id2']?></p>
-                        <p class="fw">: <?= $agen['nama_asli']?></p>
-                        <p class="fw">: <?= $agen['jabatan']?></p>
-                        <p class="fw">: <?= $agen['jenis_kelamin']?></p>
-                        <p class="fw">: <?= $agen['penempatan']?> </p>
-                        <!-- <p class="fw">: </p>
-                        <p class="fw">: </p>
-                        <p class="fw">: </p>
-                        <p class="fw">: </p>
-                        <p class="fw">: </p>
-                        <p class="fw">: </p>
-                        <p class="fw">: </p> -->
+                        <p class="fw">: <?= openssl_decrypt($agen['id2'],$chiperAlgo,$keyAes, $options, $ivAes)?></p>
+                        <p class="fw">: <?= openssl_decrypt( $agen["nama_asli"],$chiperAlgo,$keyAes, $options, $ivAes)?></p>
+                        <p class="fw">: <?= openssl_decrypt($agen['nama_alias'],$chiperAlgo,$keyAes, $options, $ivAes) ?></p>
+                        <p class="fw">: <?= openssl_decrypt($agen['jabatan'] ,$chiperAlgo,$keyAes, $options, $ivAes)?></p>
+                        <p class="fw">: <?= openssl_decrypt($agen['jenis_kelamin'],$chiperAlgo,$keyAes, $options, $ivAes)?></p>
+                        <p class="fw">: <?= openssl_decrypt($agen['penempatan'],$chiperAlgo,$keyAes, $options, $ivAes)?> </p>
                       </div>
                   </div>
                 </div>

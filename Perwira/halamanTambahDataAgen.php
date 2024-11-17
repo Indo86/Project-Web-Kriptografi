@@ -62,10 +62,10 @@ $options = 0;
       $jenis_kelamin = openssl_encrypt($_POST['jenis_kelamin'], $chiperAlgo, $keyAes, $options, $ivAes);
       $jabatan = openssl_encrypt($_POST['jabatan'], $chiperAlgo, $keyAes, $options, $ivAes);;
       $penempatan_tugas = openssl_encrypt($_POST['penempatan'], $chiperAlgo, $keyAes, $options, $ivAes);
-      $unik = openssl_encrypt($_POST['unik'], $chiperAlgo, $keyAes, $options, $ivAes);
+      $unik = hash('sha256', $_POST['unik']); // hash
       $password = hash('sha256', $_POST['password']); // hash
       $gambar = openssl_encrypt(upload(),$chiperAlgo, $keyAes, $options, $ivAes );
-      $id = openssl_encrypt($_POST['id'], $chiperAlgo, $keyAes, $options, $ivAes );
+      $id2 = openssl_encrypt($_POST['id'], $chiperAlgo, $keyAes, $options, $ivAes );
 
 
       $query = "INSERT INTO agen VALUES
@@ -179,7 +179,7 @@ header('Location: halamanDataAgen.php');
   <div class="mb-3 row">
     <label for="unik" class="col-sm-2 col-form-label">Unik</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" id="unik" name="unik">
+      <input type="password" class="form-control" id="unik" name="unik">
     </div>
   </div>
   
@@ -188,13 +188,6 @@ header('Location: halamanDataAgen.php');
     <label for="password" class="col-sm-2 col-form-label">Password </label>
     <div class="col-sm-10">
       <input type="password" class="form-control" id="password" name="password">
-    </div>
-  </div>
-
-  <div class="mb-3 row">
-    <label for="konfirmasi_password" class="col-sm-2 col-form-label">Konformasi Password </label>
-    <div class="col-sm-10">
-      <input type="password" class="form-control" id="konfirmasi_password" name="konfirmasi_password">
     </div>
   </div>
 

@@ -64,8 +64,6 @@ $options = 0;
       $jenis_kelamin = openssl_encrypt($_POST['jenis_kelamin'], $chiperAlgo, $keyAes, $options, $ivAes);
       $jabatan = openssl_encrypt($_POST['jabatan'], $chiperAlgo, $keyAes, $options, $ivAes);;
       $penempatan_tugas = openssl_encrypt($_POST['penempatan'], $chiperAlgo, $keyAes, $options, $ivAes);
-      $unik = openssl_encrypt($_POST['unik'], $chiperAlgo, $keyAes, $options, $ivAes);
-      // $password = hash('sha256', $_POST['password']); // hash
       $gambar = openssl_encrypt(upload(),$chiperAlgo, $keyAes, $options, $ivAes );
       $id2 = openssl_encrypt($_POST['id'], $chiperAlgo, $keyAes, $options, $ivAes );
 
@@ -75,7 +73,7 @@ $options = 0;
       jenis_kelamin = '$jenis_kelamin',
       jabatan = '$jabatan', 
       penempatan = '$penempatan_tugas',
-      unik = '$unik', 
+      '', 
       '',
       gambar = '$gambar',
       id2 = '$id2'
@@ -194,14 +192,6 @@ $datum = mysqli_fetch_assoc($result);
     </div>
   </div>
 
-
-  <div class="mb-3 row">
-    <label for="unik" class="col-sm-2 col-form-label">Unik</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="unik" name="unik" value="<?= openssl_decrypt( $datum["unik"],$chiperAlgo,$keyAes, $options, $ivAes)?>">
-    </div>
-  </div>
-  
   <div class="mb-3 row">
   <label for="gambar" class=" col-sm-2 form-label">Foto</label>
   <div class="col-sm-10">

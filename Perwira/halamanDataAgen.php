@@ -8,6 +8,11 @@ if(!isset($_SESSION["loginPerwira"])){
   exit;
 }
 
+$keyAes = 'makanmakanmakanp';
+$ivAes = '12345678abcdefgh';;
+$chiperAlgo= 'AES-128-CBC';
+$options = 0;
+
 ?>
 
 
@@ -163,9 +168,9 @@ if(!isset($_SESSION["loginPerwira"])){
           ?>
           <tr>
             <th scope="row"><?= $no++;?></th>
-            <td><?= $agen['nama_alias'] ?></td>
-            <td><?= $agen['penempatan'] ?></td>
-            <td><?= $agen['jenis_kelamin'] ?></td>
+            <td><?= openssl_decrypt($agen['nama_alias'],$chiperAlgo,$keyAes, $options, $ivAes) ?></td>
+            <td><?= openssl_decrypt($agen['penempatan'],$chiperAlgo,$keyAes, $options, $ivAes) ?></td>
+            <td><?= openssl_decrypt($agen['jenis_kelamin'],$chiperAlgo,$keyAes, $options, $ivAes)?></td>
             <td>
             <a href="halamanDetailDataAgen.php?id=<?= $agen['id']?>" style="text-decoration:none">
                 <button type="button" class="btn btn-outline-primary">Detail</button>
