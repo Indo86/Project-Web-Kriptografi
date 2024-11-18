@@ -108,7 +108,7 @@ $file_laporan = uploadFileLaporan();
 $status = $_POST['status'];
 // Enkripsi data
 $encryptedStatus = superEncrypt($status, $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);
-
+echo $encryptedStatus;
 $query = "UPDATE tugas SET
 status = '$encryptedStatus',
 file_laporan = '$file_laporan'

@@ -147,6 +147,7 @@ if (isset($_POST['submit'])) {
         $tugas['pesan'] = superDecrypt($tugas['pesan'], $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);
         $agen['nama_alias'] = decryptAES($agen['nama_alias'], $keyAes, $ivAes, $chiperAlgo, $options);
         $perwira['nama_alias'] = decryptAES($perwira['nama_alias'], $keyAes, $ivAes, $chiperAlgo, $options);
+        $tugas['status'] = superDecrypt($tugas['status'], $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);
         $pesan_rahasia = decryptImage("../Assets/img/" . $tugas['gambar']);
         $verifikasi = true;
     } else {

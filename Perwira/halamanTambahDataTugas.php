@@ -221,11 +221,11 @@ $status = 'Belum Mulai';
 $encryptedKode = superEncrypt($kode, $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);
 $encryptedJudul = superEncrypt($judul, $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);
 $encryptedPesan = superEncrypt($pesan, $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);
-// $encryptedTanggalMulai = superEncrypt($tanggalMulai, $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);
+$encryptedStatus = superEncrypt($status, $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);
 // $encryptedTargetSelesai = superEncrypt($targetSelesai, $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);
 
 $query = "INSERT INTO tugas (kode, judul, pesan, file_kasus, gambar, id_perwira, id_agen, tanggal_mulai, tanggal_selesai, status, file_laporan) 
-          VALUES ('$encryptedKode', '$encryptedJudul', '$encryptedPesan', '$fileKasus', '$gambar', '$id', '$id_agen', '$tanggal_mulai', '$target_selesai', '$status', '')";
+          VALUES ('$encryptedKode', '$encryptedJudul', '$encryptedPesan', '$fileKasus', '$gambar', '$id', '$id_agen', '$tanggal_mulai', '$target_selesai', '$encryptedStatus', '')";
 
 
 // Eksekusi query
@@ -315,8 +315,7 @@ header('Location: halamanTugasPerwira.php');
   <div class="mb-3 row">
   <label for="nama_perwira" class="col-sm-2 col-form-label">Perwira Penanggung Jawab</label>
   <div class="col-sm-10">
-    <input type="text" class="form-control" id="nama_perwira" name="nama_perwira" value="<?= $perwira['nama_alias']
-     // openssl_decrypt($perwira['nama_alias'], $chiperAlgo, $keyAes, $options, $ivAes); ?>" readonly>
+    <input type="text" class="form-control" id="nama_perwira" name="nama_perwira" value="<?= openssl_decrypt($perwira['nama_alias'], $chiperAlgo, $keyAes, $options, $ivAes); ?>" readonly>
     <input type="hidden" id="id_perwira" name="id_perwira" value="<?= $perwira['id']?>">
   </div>
 </div>

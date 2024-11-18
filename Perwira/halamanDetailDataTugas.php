@@ -138,7 +138,7 @@ $caesarShift = 3;
 $verifikasi = false;
 
 if (isset($_POST['submit'])) {
-    $kodeUnik = $_POST['kodeUnik'];
+    $kodeUnik = hash('sha256',$_POST['kodeUnik']);
    
     if ($kodeUnik === $perwira['unik']) { // Cek kode unik
         $tugas['kode'] = superDecrypt($tugas['kode'], $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);
@@ -147,6 +147,7 @@ if (isset($_POST['submit'])) {
         $agen['nama_alias'] = decryptAES($agen['nama_alias'], $keyAes, $ivAes, $chiperAlgo, $options);
         $perwira['nama_alias'] = decryptAES($perwira['nama_alias'], $keyAes, $ivAes, $chiperAlgo, $options);
         $tugas['status'] = superDecrypt($tugas['status'], $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);
+        
         $pesan_rahasia = decryptImage("../Assets/img/" . $tugas['gambar']);
         $verifikasi = true;
     } else {
@@ -307,7 +308,7 @@ if (isset($_POST['submit'])) {
                                 <i class="bi bi-file-earmark-arrow-down-fill"></i> Download Dokumen Kasus
                                 </button>
                             </a>
-                            <?php } else if($verifikasi && $tugas['file_laporan'] !== '' ) { ?>
+                            <?php } else if($verifikasi && $tugas['file_kasus'] !== '' ) { ?>
                             <a href="downloadFileDecrypt.php?namaFile=<?= $tugas['file_kasus']; ?>">
                                 <button type="button" class="btn btn-outline-primary">
                                 <i class="bi bi-file-earmark-arrow-down-fill"></i> Download Dokumen Kasus
