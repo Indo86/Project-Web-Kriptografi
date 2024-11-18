@@ -4,11 +4,12 @@ include("../connect.php");
 $id = $_SESSION['id'];
 $kode = $_GET['kode'];
 
-if(!isset($_SESSION["loginPerwira"])){
-  header("Location: ../loginPerwira.php");
-  exit;
+if (!isset($_SESSION["loginPerwira"])) {
+    header("Location: ../loginPerwira.php");
+    exit;
 }
 
+// Fetch data
 $queriTugas = "SELECT * FROM tugas WHERE kode = '$kode'";
 $result = mysqli_query($conn, $queriTugas);
 $tugas = mysqli_fetch_assoc($result);
@@ -22,61 +23,135 @@ $queriAgen = "SELECT * FROM agen WHERE id = '$id_agen'";
 $resultAgen = mysqli_query($conn, $queriAgen);
 $agen = mysqli_fetch_assoc($resultAgen);
 
-
-
 // Fungsi dekripsi AES
 function decryptAES($data, $key, $iv, $chiperAlgo, $options) {
-  return openssl_decrypt($data, $chiperAlgo, $key, $options, $iv);
+    return openssl_decrypt($data, $chiperAlgo, $key, $options, $iv);
 }
 
-
-function caesarEncrypt($data, $shift) {
-  $result = "";
-  for ($i = 0; $i < strlen($data); $i++) {
-      $char = $data[$i];
-      if (ctype_alpha($char)) {
-          $shifted = ord($char) + $shift;
-          if (ctype_lower($char)) {
-              if ($shifted > ord('z')) {
-                  $shifted -= 26;
-              }
-          } elseif (ctype_upper($char)) {
-              if ($shifted > ord('Z')) {
-                  $shifted -= 26;
-              }
-          }
-          $result .= chr($shifted);
-      } else {
-          $result .= $char;
-      }
-  }
-  return $result;
-}
-
-// // Fungsi dekripsi Caesar Cipher
+// Fungsi dekripsi Caesar Cipher
 function decryptCaesar($data, $shift) {
-  return caesarEncrypt($data, 26 - $shift);  // Dekripsi dengan menggeser terbalik
+    $result = "";
+    for ($i = 0; $i < strlen($data); $i++) {
+        $char = $data[$i];
+        if (ctype_alpha($char)) {
+            $shifted = ord($char) - $shift;
+            if (ctype_lower($char)) {
+                if ($shifted < ord('a')) {
+                    $shifted += 26;
+                }
+            } elseif (ctype_upper($char)) {
+                if ($shifted < ord('A')) {
+                    $shifted += 26;
+                }
+            }
+            $result .= chr($shifted);
+        } else {
+            $result .= $char;
+        }
+    }
+    return $result;
 }
 
 // Super dekripsi (AES + Caesar Cipher)
 function superDecrypt($data, $key, $iv, $chiperAlgo, $options, $caesarShift) {
-  // Dekripsi pertama dengan Caesar Cipher
-  $decryptedCaesar = decryptCaesar($data, $caesarShift);
-  
-  // Dekripsi kedua dengan AES
-  return decryptAES($decryptedCaesar, $key, $iv, $chiperAlgo, $options);
+    $decryptedCaesar = decryptCaesar($data, $caesarShift);
+    return decryptAES($decryptedCaesar, $key, $iv, $chiperAlgo, $options);
+}
+
+// Steganografi untuk mendekripsi pesan dalam gambar
+function decryptImage($imagePath)
+{
+    $img = imagecreatefromstring(file_get_contents($imagePath));
+    if (!$img) {
+        return "Gagal membaca gambar!";
+    }
+
+    $width = imagesx($img);
+    $height = imagesy($img);
+    $hiddenMessage = "";
+    $charBuffer = 0;
+    $bitCount = 0;
+
+    for ($y = 0; $y < $height; $y++) {
+        for ($x = 0; $x < $width; $x++) {
+            $rgb = imagecolorat($img, $x, $y);
+            $r = ($rgb >> 16) & 1; // Bit LSB dari Red
+            $g = ($rgb >> 8) & 1;  // Bit LSB dari Green
+            $b = $rgb & 1;         // Bit LSB dari Blue
+
+            // Proses bit Red
+            $charBuffer = ($charBuffer << 1) | $r;
+            $bitCount++;
+            if ($bitCount == 8) {
+                $hiddenMessage .= chr($charBuffer);
+                if (substr($hiddenMessage, -1) === "|") {
+                    imagedestroy($img);
+                    return rtrim($hiddenMessage, "|");
+                }
+                $charBuffer = 0;
+                $bitCount = 0;
+            }
+
+            // Proses bit Green
+            if ($bitCount < 8) {
+                $charBuffer = ($charBuffer << 1) | $g;
+                $bitCount++;
+                if ($bitCount == 8) {
+                    $hiddenMessage .= chr($charBuffer);
+                    if (substr($hiddenMessage, -1) === "|") {
+                        imagedestroy($img);
+                        return rtrim($hiddenMessage, "|");
+                    }
+                    $charBuffer = 0;
+                    $bitCount = 0;
+                }
+            }
+
+            // Proses bit Blue
+            if ($bitCount < 8) {
+                $charBuffer = ($charBuffer << 1) | $b;
+                $bitCount++;
+                if ($bitCount == 8) {
+                    $hiddenMessage .= chr($charBuffer);
+                    if (substr($hiddenMessage, -1) === "|") {
+                        imagedestroy($img);
+                        return rtrim($hiddenMessage, "|");
+                    }
+                    $charBuffer = 0;
+                    $bitCount = 0;
+                }
+            }
+        }
+    }
+
+    imagedestroy($img);
+    return "Pesan tidak ditemukan!";
 }
 
 
-
+// Kunci untuk dekripsi
 $keyAes = 'makanmakanmakanp';
 $ivAes = '12345678abcdefgh';
 $chiperAlgo = 'AES-128-CBC';
 $options = 0;
-$caesarShift = 3; // Misalnya geser 3 untuk Caesar Cipher
+$caesarShift = 3;
+$verifikasi = false;
 
-
-
+if (isset($_POST['submit'])) {
+    $kodeUnik = $_POST['kodeUnik'];
+   
+    if ($kodeUnik === $perwira['unik']) { // Cek kode unik
+        $tugas['kode'] = superDecrypt($tugas['kode'], $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);
+        $tugas['judul'] = superDecrypt($tugas['judul'], $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);
+        $tugas['pesan'] = superDecrypt($tugas['pesan'], $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);
+        $agen['nama_alias'] = decryptAES($agen['nama_alias'], $keyAes, $ivAes, $chiperAlgo, $options);
+        $perwira['nama_alias'] = decryptAES($perwira['nama_alias'], $keyAes, $ivAes, $chiperAlgo, $options);
+        $pesan_rahasia = decryptImage("../Assets/img/" . $tugas['gambar']);
+        $verifikasi = true;
+    } else {
+        echo "<script>alert('Kode unik salah!');</script>";
+    }
+}
 ?>
 
 
@@ -103,7 +178,7 @@ $caesarShift = 3; // Misalnya geser 3 untuk Caesar Cipher
 <body>
 
   <!-- Main Layout -->
-  <div id="main" class="mt-3">
+  <div id="main" class="mt-3 mb-4">
     <div class="page-content d-flex justify-content-center">
     <!-- <div class="row"> -->
   <!-- <div class="col-3">
@@ -122,17 +197,32 @@ $caesarShift = 3; // Misalnya geser 3 untuk Caesar Cipher
         <div class="col-4">
         <h4 class="text-light text-center">Tugas Operasi <?= $tugas['judul']; ?></h4>
         </div>
-        <div class="col-4">
-
+        <div class="col-4 d-flex justify-content-end">
+     
         </div>
        </div>
       </div>
           <div class="card-body">
             <div class="col-12">
-                  <div class="img-profile d-flex justify-content-center mb-3">
+                  <div class="img-profile d-flex flex-row justify-content-center mb-3 gap-2">
                       <div class="card shadow-sm" style="width: 20rem;">
                           <img src="../Assets/img/<?= $tugas['gambar']?>" class="card-img-top" alt="...">
                       </div>
+                      <?php if($verifikasi){ ?>
+                        <div class="mb-3 col">
+                            <label for="pesan" class="col-sm-2 col-form-label">Pesan Tersembunyi</label>
+                            <div class="col-sm-10">
+                              <textarea 
+                                class="form-control" 
+                                id="pesan" 
+                                name="pesan" 
+                                rows="5" 
+                                style="resize: none; height: 10rem; width: 20rem;" value="<?= $pesan_rahasia; ?>" readonly>
+                                <?= $pesan_rahasia; ?>
+                              </textarea>
+                            </div>
+                          </div>
+                        <?php } ?>
                   </div>
             
                    <div class="row">
@@ -159,14 +249,25 @@ $caesarShift = 3; // Misalnya geser 3 untuk Caesar Cipher
                         <p class="fw">: <?= $tugas['pesan'] ?></p>
                   </div>
                 <div class="row unduh">
-                <?php if($tugas['file_kasus'] !== '') { ?>
+                <?php if($tugas['file_kasus'] !== '' && !$verifikasi) { ?>
                   <a href="downloadFile.php?namaFile=<?= $tugas['file_kasus']; ?>">
                   <button type="button" class="btn btn-outline-primary mt-5"><i class="bi bi-file-earmark-arrow-down-fill"></i> Download Dokumen Kasus</button>
                   </a>
-                <?php }else{ ?>
-
+                <?php }else if($verifikasi){ ?>
+                  <a href="downloadFileDecrypt.php?namaFile=<?= $tugas['file_kasus']; ?>">
+                  <button type="button" class="btn btn-outline-primary mt-5"><i class="bi bi-file-earmark-arrow-down-fill"></i> Download Dokumen Kasus</button>
+                  </a>
                 <?php  }?>
                 </div>
+                <!-- form verifikasi -->
+                    <form action="" method="post" enctype="multipart/form-data" class="mt-3">
+                        <div class="mb-3">
+                            <label for="kodeUnik" class="form-label">Keunikan anda apa?</label>
+                            <input type="password" class="form-control" id="kodeUnik" name="kodeUnik" required>
+                        </div>
+                        <button type="submit" class="btn btn-outline-warning" name="submit">Dekripsi <i class="bi bi-file-earmark-break-fill"></i> </button>
+                    </form>
+              
                 </div>
               </div>
             </div>

@@ -29,81 +29,89 @@ if(isset($_POST["submit"])){
   $pesan_tersembunyi = $_POST['pesan_tersembunyi'];
 
   function uploadGambar($pesan_tersembunyi)
-  {
-      $namaFile = $_FILES['gambar']['name'];
-      $ukuranFile = $_FILES['gambar']['size'];
-      $error = $_FILES['gambar']['error'];
-      $tmpName = $_FILES['gambar']['tmp_name'];
-  
-      // Validasi ekstensi gambar
-      $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
-      $ekstensiGambar = strtolower(pathinfo($namaFile, PATHINFO_EXTENSION));
-  
-      if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
-          echo "<script>alert('File yang diupload bukan gambar!');</script>";
-          return false;
-      }
-  
-      // Validasi ukuran file
-      if ($ukuranFile > 10000000) {
-          echo "<script>alert('Ukuran file terlalu besar!');</script>";
-          return false;
-      }
-  
-      // Proses steganografi: Sisipkan pesan ke dalam gambar
-      $img = imagecreatefromstring(file_get_contents($tmpName));
-      if (!$img) {
-          echo "<script>alert('Gagal memproses gambar!');</script>";
-          return false;
-      }
-  
-      // Sisipkan pesan (setiap karakter ASCII ke pixel)
-      $pesan_tersembunyi .= '|'; // Tandai akhir pesan
-      $pesanIndex = 0;
-      $len = strlen($pesan_tersembunyi);
-  
-      $width = imagesx($img);
-      $height = imagesy($img);
-  
-      for ($y = 0; $y < $height; $y++) {
-          for ($x = 0; $x < $width; $x++) {
-              if ($pesanIndex < $len) {
-                  $rgb = imagecolorat($img, $x, $y);
-                  $r = ($rgb >> 16) & 0xFF;
-                  $g = ($rgb >> 8) & 0xFF;
-                  $b = $rgb & 0xFF;
-  
-                  $newR = ($r & 0xFE) | (ord($pesan_tersembunyi[$pesanIndex]) >> 7); // Sisipkan bit ke-7 ASCII
-                  $newG = ($g & 0xFE) | ((ord($pesan_tersembunyi[$pesanIndex]) >> 6) & 1);
-                  $newB = ($b & 0xFE) | ((ord($pesan_tersembunyi[$pesanIndex]) >> 5) & 1);
-  
-                  $color = imagecolorallocate($img, $newR, $newG, $newB);
-                  imagesetpixel($img, $x, $y, $color);
-  
-                  $pesanIndex++;
-              }
-          }
-      }
-  
-      // Simpan gambar baru
-      $namaFileBaru = uniqid() . '.' . $ekstensiGambar;
-      $path = '../Assets/img/' . $namaFileBaru;
-  
-      if ($ekstensiGambar === 'png') {
-          imagepng($img, $path);
-      } else {
-          imagejpeg($img, $path);
-      }
-  
-      imagedestroy($img);
-      return $namaFileBaru;
-  }
+{
+    $namaFile = $_FILES['gambar']['name'];
+    $ukuranFile = $_FILES['gambar']['size'];
+    $error = $_FILES['gambar']['error'];
+    $tmpName = $_FILES['gambar']['tmp_name'];
+
+    // Validasi ekstensi gambar
+    $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
+    $ekstensiGambar = strtolower(pathinfo($namaFile, PATHINFO_EXTENSION));
+
+    if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
+        echo "<script>alert('File yang diupload bukan gambar!');</script>";
+        return false;
+    }
+
+    // Validasi ukuran file
+    if ($ukuranFile > 10000000) {
+        echo "<script>alert('Ukuran file terlalu besar!');</script>";
+        return false;
+    }
+
+    // Proses steganografi: Sisipkan pesan ke dalam gambar
+    $img = imagecreatefromstring(file_get_contents($tmpName));
+    if (!$img) {
+        echo "<script>alert('Gagal memproses gambar!');</script>";
+        return false;
+    }
+
+    // Sisipkan pesan (setiap bit pesan tersembunyi ke pixel)
+    $pesan_tersembunyi .= '|'; // Tandai akhir pesan
+    $pesanBits = [];
+    for ($i = 0; $i < strlen($pesan_tersembunyi); $i++) {
+        $char = ord($pesan_tersembunyi[$i]);
+        for ($j = 7; $j >= 0; $j--) {
+            $pesanBits[] = ($char >> $j) & 1; // Ekstrak setiap bit dari karakter
+        }
+    }
+
+    $bitIndex = 0;
+    $width = imagesx($img);
+    $height = imagesy($img);
+
+    for ($y = 0; $y < $height; $y++) {
+        for ($x = 0; $x < $width; $x++) {
+            if ($bitIndex < count($pesanBits)) {
+                $rgb = imagecolorat($img, $x, $y);
+                $r = ($rgb >> 16) & 0xFF;
+                $g = ($rgb >> 8) & 0xFF;
+                $b = $rgb & 0xFF;
+
+                $r = ($r & 0xFE) | $pesanBits[$bitIndex++];
+                if ($bitIndex < count($pesanBits)) {
+                    $g = ($g & 0xFE) | $pesanBits[$bitIndex++];
+                }
+                if ($bitIndex < count($pesanBits)) {
+                    $b = ($b & 0xFE) | $pesanBits[$bitIndex++];
+                }
+
+                $color = imagecolorallocate($img, $r, $g, $b);
+                imagesetpixel($img, $x, $y, $color);
+            }
+        }
+    }
+
+    // Simpan gambar baru
+    $namaFileBaru = uniqid() . '.' . $ekstensiGambar;
+    $path = '../Assets/img/' . $namaFileBaru;
+
+    if ($ekstensiGambar === 'png') {
+        imagepng($img, $path);
+    } else {
+        imagejpeg($img, $path);
+    }
+
+    imagedestroy($img);
+    return $namaFileBaru;
+}
 
 
   function uploadFileKasus()
   {
-      $namaFile = $_FILES['file_kasus']['name'];
-      $tmpName = $_FILES['file_kasus']['tmp_name'];
+      $namaFile = $_FILES['file_kasus']['name']; // Nama file asli
+      $tmpName = $_FILES['file_kasus']['tmp_name']; // Lokasi file sementara
       $ukuranFile = $_FILES['file_kasus']['size'];
   
       // Validasi file
@@ -113,18 +121,21 @@ if(isset($_POST["submit"])){
       }
   
       // Enkripsi file menggunakan Triple DES
-      $key = 'enkripsiRahasia123enkripsiRahasia123'; // Kunci enkripsi (harus 24 byte untuk 3DES)
+      $key = 'enkripsiRahasia123enkripsiRahasia123'; // Kunci enkripsi (24 byte untuk 3DES)
       $cipher = 'des-ede3-cbc'; // Triple DES (3DES) dalam mode CBC
-      $iv = '12345678'; // Generate IV acak sesuai panjang cipher
+      $iv = '12345678'; // IV (8 byte untuk DES/3DES)
   
       // Membaca file
       $data = file_get_contents($tmpName);
   
+      // Menambahkan nama file asli ke data sebelum enkripsi
+      $dataWithMetadata = $namaFile . "::" . $data;
+  
       // Enkripsi data
-      $encryptedData = openssl_encrypt($data, $cipher, $key, 0, $iv);
+      $encryptedData = openssl_encrypt($dataWithMetadata, $cipher, $key, 0, $iv);
   
       // Membuat nama file terenkripsi
-      $namaFileEnkripsi = uniqid() . '.enc';
+      $namaFileEnkripsi = uniqid('encrypted_') . '.enc';
       $path = '../Assets/files/' . $namaFileEnkripsi;
   
       // Simpan IV dan data terenkripsi ke dalam file
@@ -132,7 +143,7 @@ if(isset($_POST["submit"])){
   
       return $namaFileEnkripsi;
   }
-
+  
   
 // Fungsi enkripsi AES (Modern Algorithm)
 function encryptAES($data, $key, $iv, $chiperAlgo, $options) {
