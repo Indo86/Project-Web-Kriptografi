@@ -14,6 +14,13 @@ $result = mysqli_query($conn, $queriPerwira);
 $perwira = mysqli_fetch_assoc($result);
 
 
+$keyAes = 'makanmakanmakanp';
+$ivAes = '12345678abcdefgh';;
+$chiperAlgo= 'AES-128-CBC';
+$options = 0;
+
+
+
 ?>
 
 
@@ -150,7 +157,7 @@ $perwira = mysqli_fetch_assoc($result);
             <div class="col-12">
                   <div class="img-profile d-flex justify-content-center mb-3">
                       <div class="card shadow-sm" style="width: 20rem;">
-                          <img src="../Assets/img/person.jpg" class="card-img-top" alt="...">
+                          <img src="../Assets/img/<?=  openssl_decrypt($perwira['gambar'],$chiperAlgo,$keyAes, $options, $ivAes) ?>" class="card-img-top" alt="...">
                       </div>
                   </div>
             
@@ -170,11 +177,11 @@ $perwira = mysqli_fetch_assoc($result);
                         <p class="fw-bold">Gol Darah</p> -->
                       </div>
                       <div class="col-7">
-                        <p class="fw">: <?= $perwira['id']?></p>
-                        <p class="fw">: <?= $perwira['nama']?></p>
-                        <p class="fw">: <?= $perwira['jabatan']?></p>
-                        <p class="fw">: <?= $perwira['jenis_kelamin']?></p>
-                        <p class="fw">: <?= $perwira['wilayah_tugas']?> </p>
+                        <p class="fw">: <?=  openssl_decrypt($perwira['id2'],$chiperAlgo,$keyAes, $options, $ivAes)?></p>
+                        <p class="fw">: <?=  openssl_decrypt($perwira['nama'] ,$chiperAlgo,$keyAes, $options, $ivAes)?></p>
+                        <p class="fw">: <?=  openssl_decrypt($perwira['jabatan'] ,$chiperAlgo,$keyAes, $options, $ivAes)?></p>
+                        <p class="fw">: <?=  openssl_decrypt($perwira['jenis_kelamin'] ,$chiperAlgo,$keyAes, $options, $ivAes)?></p>
+                        <p class="fw">: <?=  openssl_decrypt($perwira['wilayah_tugas'] ,$chiperAlgo,$keyAes, $options, $ivAes)?> </p>
                         <!-- <p class="fw">: </p>
                         <p class="fw">: </p>
                         <p class="fw">: </p>

@@ -12,15 +12,15 @@ if(isset($_POST["loginPerwira"])){
   // $nip = hash('sha256', $_POST["nip"]);
   // $password = openssl_encrypt($_POST["password"], $chiperAlgo, $keyAes, $options, $ivAes);
 
-  $id = $_POST["id"];
-  $password = $_POST["password"];
+  $id = hash('sha256', $_POST["id"]);
+  $password = hash('sha256',$_POST['password'] );
   $queri = "SELECT * FROM perwira WHERE id = '$id' AND password = '$password'";
   $result = mysqli_query($conn, $queri);
 
   if(mysqli_num_rows($result) > 0){
 
     $_SESSION["loginPerwira"] = true;
-    $_SESSION["id"] = $_POST["id"];
+    $_SESSION["id"] = $id;
   
     header("Location: Perwira/halamanDashboardPerwira.php");
     exit;

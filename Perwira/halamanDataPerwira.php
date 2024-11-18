@@ -10,7 +10,10 @@ if(!isset($_SESSION["loginPerwira"])){
 
 
 
-
+$keyAes = 'makanmakanmakanp';
+$ivAes = '12345678abcdefgh';;
+$chiperAlgo= 'AES-128-CBC';
+$options = 0;
 
 ?>
 
@@ -133,42 +136,46 @@ if(!isset($_SESSION["loginPerwira"])){
   <!-- Main Layout -->
   <div id="main">
     <div class="page-heading mb-4">
-      <h1>Tugas Perwira</h1>
+      <h1>Data Perwira</h1>
     </div>
     <div class="page-content">
     <div class="button-tambah d-flex justify-content-end mb-3">
-          <a href="#" style="text-decoration:none">
-                <button type="button" class="btn btn-outline-secondary"><i class="bi bi-megaphone-fill ms-0 me-2"></i>Buat Pengumuman</button>
+          <a href="halamanTambahDataPerwira.php" style="text-decoration:none">
+                <button type="button" class="btn btn-outline-secondary"><i class="bi bi-megaphone-fill ms-0 me-2"></i>Tambah Perwira</button>
             </a>
     </div>
     <table class="table">
         <thead class="table-primary">
           <tr>
-            <th scope="col">No</th>
-            <th scope="col">Tanggal</th>
-            <th scope="col">Judul Pengumuman</th>
-            <th scope="col">Penulis</th>
+          <th scope="col">No</th>
+            <th scope="col">Nama</th>
+            <th scope="col">Wilaya Penempatan</th>
+            <th scope="col">Jenis Kelamin</th>
             <th scope="col">Aksi</th>
           </tr>
         </thead>
         <tbody>
+        <?php 
+          $no = 1;
+          $queriPerwi = "SELECT * FROM perwira";
+          $result = mysqli_query($conn, $queriPerwi);
+          while($perwira = mysqli_fetch_assoc($result)){
+          ?>
           <tr>
-            <th scope="row">1</th>
-            <td>11-11-2024</td>
-            <td>Operasi Tangkap Tangan Koruptor</td>
-            <td>Mayor Jend. Agus Subiyanto</td>
+            <th scope="row"><?= $no++;?></th>
+            <td><?= openssl_decrypt($perwira['nama_alias'],$chiperAlgo,$keyAes, $options, $ivAes) ?></td>
+            <td><?= openssl_decrypt($perwira['wilayah_tugas'],$chiperAlgo,$keyAes, $options, $ivAes) ?></td>
+            <td><?= openssl_decrypt($perwira['jenis_kelamin'],$chiperAlgo,$keyAes, $options, $ivAes)?></td>
             <td>
-            <a href="#" style="text-decoration:none">
+            <a href="halamanDetailDataPerwira.php?id=<?= $perwira['id']?>" style="text-decoration:none">
                 <button type="button" class="btn btn-outline-primary">Detail</button>
             </a>
-            <a href="#" style="text-decoration:none">
+            <a href="halamanEditDataPerwira.php?id=<?= $perwira['id']?>" style="text-decoration:none">
                 <button type="button" class="btn btn-outline-warning">Edit</button>
-            </a>
-            <a href="#" style="text-decoration:none">
-                <button type="button" class="btn btn-outline-danger">Hapus</button>
             </a>
             </td>
           </tr>
+          <?php } ?>
 
         </tbody>
       </table>

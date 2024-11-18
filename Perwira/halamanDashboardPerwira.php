@@ -9,7 +9,6 @@ if(!isset($_SESSION["loginPerwira"])){
 }
 
 
-
 $queriPerwira = "SELECT * FROM perwira WHERE id = '$id'";
 $result = mysqli_query($conn, $queriPerwira);
 $perwira = mysqli_fetch_assoc($result);
@@ -24,6 +23,11 @@ $jumlahTugas = mysqli_fetch_assoc($resultJumlahTugas);
 $queriJumlahAgen = "SELECT COUNT(*) AS totalAgen FROM agen";
 $resultJumlahAgen = mysqli_query($conn,$queriJumlahAgen );
 $jumlahAgen = mysqli_fetch_assoc($resultJumlahAgen);
+
+$keyAes = 'makanmakanmakanp';
+$ivAes = '12345678abcdefgh';;
+$chiperAlgo= 'AES-128-CBC';
+$options = 0;
 
 ?>
 
@@ -145,7 +149,7 @@ $jumlahAgen = mysqli_fetch_assoc($resultJumlahAgen);
   <!-- Main Layout -->
   <div id="main">
     <div class="page-heading mb-4">
-      <h1>Dashboard Komandan <?= $perwira['nama'] ?></h1>
+      <h1>Dashboard Komandan <?= openssl_decrypt($perwira['nama_alias'],$chiperAlgo,$keyAes, $options, $ivAes) ?></h1>
     </div>
     <div class="page-content">
     <div class="row dashboard-card">
@@ -166,24 +170,7 @@ $jumlahAgen = mysqli_fetch_assoc($resultJumlahAgen);
         </div>
 
       </div>
-      <!-- Jumlah pengumuman  -->
-      <div class="col-4 card-dashboard">
-        <!-- card jumlah Pengumuman -->
-        <div class="card text-bg-warning mb-3" style="max-width: 540px;">
-          <div class="row g-0">
-            <div class="col-md-4 d-flex flex-column align-items-center justify-content-center">
-                <h3>15</h3>
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h3 class="card-title">Pengumuman</h3>
-                <p>Top secret anouncement</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
+     
       <!-- Jumlah Laporan  -->
       <div class="col-4 card-dashboard">
         <!-- card jumlah Laporan -->
