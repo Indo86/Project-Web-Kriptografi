@@ -1,30 +1,32 @@
 <?php 
-// session_start();
-// include("connect.php");
+session_start();
+include("connect.php");
 
-// // login admin
-// if(isset($_POST["loginA"])){
-//   $keyAes = 'makanmakanmakanp';
-//   $ivAes = '12345678abcdefgh';;
-//   $chiperAlgo= 'AES-128-CBC';
-//   $options = 0;
 
-//   $nip = hash('sha256', $_POST["nip"]);
-//   $password = openssl_encrypt($_POST["password"], $chiperAlgo, $keyAes, $options, $ivAes);
+// login Agen
+if(isset($_POST["loginAgen"])){
 
-//   $queri = "SELECT * FROM admin WHERE hash_nip = '$nip' AND password = '$password'";
-//   $result = mysqli_query($conn, $queri);
-
-//   if(mysqli_num_rows($result) > 0){
-
-//     $_SESSION["loginA"] = true;
-//     $_SESSION["nip"] = $_POST["nip"];
+  $id = hash('sha256', $_POST["id"]);
+  $password = hash('sha256',$_POST['password'] );
   
-//     header("Location: halamanDataPenduduk.php");
-//     exit;
-//   }
-//   $error = true;
-// }
+  $queri = "SELECT * FROM agen WHERE id = '$id' AND password = '$password'";
+  $result = mysqli_query($conn, $queri);
+
+ 
+  if(mysqli_num_rows($result) > 0){
+
+    $_SESSION["loginAgen"] = true;
+    $_SESSION["id"] = $id;
+  
+    header("Location: Agen/halamanDashboardAgen.php");
+    exit;
+  }
+  // echo $id;
+  // echo $password;
+  // echo $queri;
+  // echo mysqli_num_rows($result);
+  $error = true;
+}
 
 
 ?>
@@ -122,13 +124,13 @@
           </div>
           <div class="card-body p-5">
             <h3 class="mb-4 text-center">Masuk</h3>
-              <!-- <?php // if(isset($error)){ ?>
-                <p style="color: red; font-style: itaitalic ; "> NIP / Password salah!! </p>
-                <?php // } ?> -->
+              <?php  if(isset($error)){ ?>
+                <p style="color: red; font-style: itaitalic ; "> ID / Password salah!! </p>
+                <?php } ?>
 
             <div class="form-outline mb-4">
-            <label class="form-label" for="nip">NIP</label>
-              <input type="text" id="nip" name="nip" class="form-control form-control-lg" />
+            <label class="form-label" for="id">ID</label>
+              <input type="text" id="id" name="id" class="form-control form-control-lg" />
             </div>
 
             <div class="form-outline mb-5">
@@ -138,7 +140,7 @@
 
             <!-- Checkbox -->
             <div class="text-center">
-            <button class="btn login btn-primary btn-lg btn-block d-grip col-12 mx-auto text-center-round" name="loginA">Login</button>
+            <button class="btn login btn-primary btn-lg btn-block d-grip col-12 mx-auto text-center-round" name="loginAgen">Login</button>
             
             <hr class="my-4">
               </div>

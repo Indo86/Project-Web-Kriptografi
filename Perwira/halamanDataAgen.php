@@ -101,17 +101,11 @@ $options = 0;
         <a href="halamanArsipTugasPerwira.php" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-archive-fill me-3"></i><span>Arsip Tugas</span>
         </a>
-        <a href="halamanPengumumanPerwira.php" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="bi bi-megaphone-fill me-3"></i><span>Pengumuman</span>
+        <a href="halamanDataPerwira.php" class="list-group-item list-group-item-action py-2 ripple">
+          <i class="bi bi-bookmark-star me-3"></i><span>Data Perwira</span>
         </a>
         <a href="#" class="list-group-item list-group-item-action py-2 ripple active" aria-current="true">
           <i class="bi bi-people-fill me-3"></i><span>Data Agen</span>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="bi bi-file-earmark-lock me-3"></i><span>Enkripsi Dokumen</span>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="bi bi-file-earmark-post me-3"></i><span>Dekripsi Dokumen</span>
         </a>
         <a href="halamanProfilePerwira.php" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-person-bounding-box me-3"></i><span>Profil</span>

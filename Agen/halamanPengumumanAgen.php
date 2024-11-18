@@ -1,3 +1,17 @@
+<?php 
+session_start();
+include("../connect.php");
+$id = $_SESSION['id'];
+
+if(!isset($_SESSION["loginAgen"])){
+  header("Location: ../loginAgen.php");
+  exit;
+}
+
+
+?>
+
+
 <!doctype html>
 <html lang="en">
   <head>

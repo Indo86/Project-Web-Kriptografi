@@ -4,8 +4,8 @@ include("../connect.php");
 $id = $_SESSION['id'];
 $kode = $_GET['kode'];
 
-if (!isset($_SESSION["loginPerwira"])) {
-    header("Location: ../loginPerwira.php");
+if (!isset($_SESSION["loginAgen"])) {
+    header("Location: ../loginAgen.php");
     exit;
 }
 
@@ -14,12 +14,13 @@ $queriTugas = "SELECT * FROM tugas WHERE kode = '$kode'";
 $result = mysqli_query($conn, $queriTugas);
 $tugas = mysqli_fetch_assoc($result);
 
-$queriPerwira = "SELECT * FROM perwira WHERE id = '$id'";
+$id_perwira = $tugas['id_perwira'];
+$queriPerwira = "SELECT * FROM perwira WHERE id = '$id_perwira'";
 $resultPerwira = mysqli_query($conn, $queriPerwira);
 $perwira = mysqli_fetch_assoc($resultPerwira);
 
-$id_agen = $tugas['id_agen'];
-$queriAgen = "SELECT * FROM agen WHERE id = '$id_agen'";
+
+$queriAgen = "SELECT * FROM agen WHERE id = '$id'";
 $resultAgen = mysqli_query($conn, $queriAgen);
 $agen = mysqli_fetch_assoc($resultAgen);
 
@@ -138,15 +139,14 @@ $caesarShift = 3;
 $verifikasi = false;
 
 if (isset($_POST['submit'])) {
-    $kodeUnik = $_POST['kodeUnik'];
+    $kodeUnik = hash('sha256', $_POST['kodeUnik']);
    
-    if ($kodeUnik === $perwira['unik']) { // Cek kode unik
+    if ($kodeUnik === $agen['unik']) { // Cek kode unik
         $tugas['kode'] = superDecrypt($tugas['kode'], $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);
         $tugas['judul'] = superDecrypt($tugas['judul'], $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);
         $tugas['pesan'] = superDecrypt($tugas['pesan'], $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);
         $agen['nama_alias'] = decryptAES($agen['nama_alias'], $keyAes, $ivAes, $chiperAlgo, $options);
         $perwira['nama_alias'] = decryptAES($perwira['nama_alias'], $keyAes, $ivAes, $chiperAlgo, $options);
-        $tugas['status'] = superDecrypt($tugas['status'], $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);
         $pesan_rahasia = decryptImage("../Assets/img/" . $tugas['gambar']);
         $verifikasi = true;
     } else {
@@ -190,7 +190,7 @@ if (isset($_POST['submit'])) {
       <div class="card-header bg-dark">
        <div class="row">
        <div class="col-4">
-            <a href="halamanTugasPerwira.php">
+            <a href="halamanTugasAgen.php">
             <button type="button" class="btn btn-outline-light content-start"><i class="bi bi-arrow-left"></i> Kembali</button>
             </a>
         </div>
@@ -203,7 +203,7 @@ if (isset($_POST['submit'])) {
         </div>
        </div>
       </div>
-      <div class="card-body">
+          <div class="card-body">
           <div class="col-12">
                 <div class="img-profile d-flex flex-column align-items-center mb-3 gap-4">
                     <!-- Bagian gambar -->
@@ -284,7 +284,6 @@ if (isset($_POST['submit'])) {
                         <input type="text" class="form-control-plaintext" id="status" value="<?= $tugas['status'] ?>" readonly>
                         </div>
                     </div>
-
                     <!-- Pesan -->
                     <div class="mb-3 row">
                         <label for="pesan" class="col-sm-4 col-form-label fw-bold">Pesan</label>
@@ -332,7 +331,6 @@ if (isset($_POST['submit'])) {
                             <?php } ?>
                         </div>
                         </div>
-
 
                 <!-- form verifikasi -->
                     <form action="" method="post" enctype="multipart/form-data" class="mt-3">

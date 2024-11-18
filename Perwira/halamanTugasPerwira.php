@@ -154,18 +154,13 @@ $caesarShift = 3; // Misalnya geser 3 untuk Caesar Cipher
         <a href="halamanArsipTugasPerwira.php" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-archive-fill me-3"></i><span>Arsip Tugas</span>
         </a>
-        <a href="halamanPengumumanPerwira.php" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="bi bi-megaphone-fill me-3"></i><span>Pengumuman</span>
+        <a href="halamanDataPerwira.php" class="list-group-item list-group-item-action py-2 ripple">
+          <i class="bi bi-bookmark-star me-3"></i><span>Data Perwira</span>
         </a>
         <a href="halamanDataAgen.php" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-people-fill me-3"></i><span>Data Agen</span>
         </a>
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="bi bi-file-earmark-lock me-3"></i><span>Enkripsi Dokumen</span>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="bi bi-file-earmark-post me-3"></i><span>Dekripsi Dokumen</span>
-        </a>
+
         <a href="halamanProfilePerwira.php" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-person-bounding-box me-3"></i><span>Profil</span>
         </a>
@@ -238,7 +233,7 @@ $caesarShift = 3; // Misalnya geser 3 untuk Caesar Cipher
             <?= openssl_decrypt($agen['nama_alias'],$chiperAlgo,$keyAes, $options, $ivAes)?>
             </td>
             <td>
-              <span class="badge bg-primary"> <?= $tugas['status'] ?> </span>
+              <span class="badge bg-primary"> <?=         $tugas['status'] = superDecrypt($tugas['status'], $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift); ?> </span>
             </td>
             <td>
             <a href="halamanDetailDataTugas.php?kode=<?= $tugas['kode'] ?>" style="text-decoration:none">

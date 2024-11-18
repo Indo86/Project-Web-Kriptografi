@@ -1,3 +1,25 @@
+<?php 
+session_start();
+include("../connect.php");
+$id = $_SESSION['id'];
+
+if(!isset($_SESSION["loginAgen"])){
+  header("Location: ../loginAgen.php");
+  exit;
+}
+
+$keyAes = 'makanmakanmakanp';
+$ivAes = '12345678abcdefgh';;
+$chiperAlgo= 'AES-128-CBC';
+$options = 0;
+
+$queriAgen = "SELECT * FROM agen WHERE id = '$id'";
+$result = mysqli_query($conn, $queriAgen);
+$agen = mysqli_fetch_assoc($result);
+
+?>
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -80,28 +102,19 @@
         <a href="halamanArsipTugasAgen.php" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-archive-fill me-3"></i><span>Arsip Tugas</span>
         </a>
-        <a href="halamanPengumumanAgen.php" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="bi bi-megaphone-fill me-3"></i><span>Pengumuman</span>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="bi bi-file-earmark-lock me-3"></i><span>Enkripsi Dokumen</span>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="bi bi-file-earmark-post me-3"></i><span>Dekripsi Dokumen</span>
-        </a>
-        <a href="halamanProfileAgen.php" class="list-group-item list-group-item-action py-2 ripple active" aria-current="true">
+        <a href="#" class="list-group-item list-group-item-action py-2 ripple active" aria-current="true">
           <i class="bi bi-person-bounding-box me-3"></i><span>Profil</span>
         </a>
-        <div class="d-grid gap-2 col-10 mx-auto mt-5">
+        <a href="logoutAgen.php" style="text-decoration:none;" class="d-grid gap-2 col-10 mx-auto mt-5">
           <button class="btn btn-danger text-light" type="button">Log Out</button>
-        </div>
+        </a>
       </div>
     </div>
   </div>
   <!-- End Sidebar / Offcanvas -->
 
   <!-- Navbar -->
-  <nav class="navbar bg-dark navbar-dark nav-top">
+  <nav class="navbar bg-dark navbar-dark nav-top fixed-top">
     <div class="container-fluid">
       <!-- Toggle button for offcanvas, visible only on small screens -->
       <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar" aria-label="Toggle navigation">
@@ -114,57 +127,54 @@
     </div>
   </nav>
 </header>
-  <!-- Main Layout -->
-  <div id="main">
-    <div class="page-heading mb-4">
-      <h1>Profile Agen</h1>
-    </div>
+   <!-- Main Layout -->
+   <div id="main" class="mt-3">
     <div class="page-content d-flex justify-content-center">
     <!-- <div class="row"> -->
   <!-- <div class="col-3">
      
   </div> -->
-  <div class="col-8">
-  <div class="card shadow-sm">
-  <div class="card-header bg-dark text-center">
-    <h4 class="text-light">Profil Agen</h4>
+  <div class="col-8" style="margin-top: 40px;">
+  <div class="card shadow-sm ">
+      <div class="card-header bg-dark">
+       <div class="row">
+       <div class="col-4">
+          
+        </div>
+
+        <div class="col-4">
+        <h4 class="text-light text-center">Profil Agen <?= openssl_decrypt($agen['nama_alias'],$chiperAlgo,$keyAes, $options, $ivAes)?></h4>
+        </div>
+        <div class="col-4">
+
+        </div>
+       </div>
       </div>
           <div class="card-body">
             <div class="col-12">
                   <div class="img-profile d-flex justify-content-center mb-3">
                       <div class="card shadow-sm" style="width: 20rem;">
-                          <img src="../Assets/img/person.jpg" class="card-img-top" alt="...">
+                          <img src="../Assets/img/<?= openssl_decrypt($agen['gambar'],$chiperAlgo,$keyAes, $options, $ivAes)?>" class="card-img-top" alt="...">
                       </div>
                   </div>
             
                    <div class="row">
                       <div class=" col-5 grid gap-4" >
-                        <p class="fw-bold">NIK</p>
-                        <p class="fw-bold">Nama</p>
-                        <p class="fw-bold">Tempat/Tanggal lahir</p>
-                        <p class="fw-bold">jenis Kelamin</p>
-                        <p class="fw-bold">Alamat</p>
-                        <!-- <p class="fw-bold ms-3">RT/RW</p>
-                        <p class="fw-bold ms-3">Kel/Desa</p>
-                        <p class="fw-bold ms-3">Kecamatan</p>
-                        <p class="fw-bold">Setatus Perkawinan</p>
-                        <p class="fw-bold">Pekerjaan</p>
-                        <p class="fw-bold">Kewarganegaraan</p>
-                        <p class="fw-bold">Gol Darah</p> -->
+                        <p class="fw-bold">ID</p>
+                        <p class="fw-bold">Nama Asli</p>
+                        <p class="fw-bold">Nama Samaran</p>
+                        <p class="fw-bold">Jabatan</p>
+                        <p class="fw-bold">Jenis Kelamin</p>
+                        <p class="fw-bold">Wilayah Tugas</p>
+
                       </div>
                       <div class="col-7">
-                        <p class="fw">: </p>
-                        <p class="fw">: </p>
-                        <p class="fw">: </p>
-                        <p class="fw">: </p>
-                        <p class="fw">: </p>
-                        <!-- <p class="fw">: </p>
-                        <p class="fw">: </p>
-                        <p class="fw">: </p>
-                        <p class="fw">: </p>
-                        <p class="fw">: </p>
-                        <p class="fw">: </p>
-                        <p class="fw">: </p> -->
+                        <p class="fw">: <?= openssl_decrypt($agen['id2'],$chiperAlgo,$keyAes, $options, $ivAes)?></p>
+                        <p class="fw">: <?= openssl_decrypt( $agen["nama_asli"],$chiperAlgo,$keyAes, $options, $ivAes)?></p>
+                        <p class="fw">: <?= openssl_decrypt($agen['nama_alias'],$chiperAlgo,$keyAes, $options, $ivAes) ?></p>
+                        <p class="fw">: <?= openssl_decrypt($agen['jabatan'] ,$chiperAlgo,$keyAes, $options, $ivAes)?></p>
+                        <p class="fw">: <?= openssl_decrypt($agen['jenis_kelamin'],$chiperAlgo,$keyAes, $options, $ivAes)?></p>
+                        <p class="fw">: <?= openssl_decrypt($agen['penempatan'],$chiperAlgo,$keyAes, $options, $ivAes)?> </p>
                       </div>
                   </div>
                 </div>

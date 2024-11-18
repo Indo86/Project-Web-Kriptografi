@@ -89,7 +89,7 @@ $agen = mysqli_fetch_assoc($result);
                       </div>
                       <div class="col-7">
                         <p class="fw">: <?= openssl_decrypt($agen['id2'],$chiperAlgo,$keyAes, $options, $ivAes)?></p>
-                        <p class="fw">: <?= openssl_decrypt( $agen["nama_asli"],$chiperAlgo,$keyAes, $options, $ivAes)?></p>
+                        <p class="fw">: <?= openssl_decrypt($agen["nama_asli"],$chiperAlgo,$keyAes, $options, $ivAes)?></p>
                         <p class="fw">: <?= openssl_decrypt($agen['nama_alias'],$chiperAlgo,$keyAes, $options, $ivAes) ?></p>
                         <p class="fw">: <?= openssl_decrypt($agen['jabatan'] ,$chiperAlgo,$keyAes, $options, $ivAes)?></p>
                         <p class="fw">: <?= openssl_decrypt($agen['jenis_kelamin'],$chiperAlgo,$keyAes, $options, $ivAes)?></p>

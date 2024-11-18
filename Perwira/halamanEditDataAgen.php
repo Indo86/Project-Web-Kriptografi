@@ -66,19 +66,18 @@ $options = 0;
       $penempatan_tugas = openssl_encrypt($_POST['penempatan'], $chiperAlgo, $keyAes, $options, $ivAes);
       $gambar = openssl_encrypt(upload(),$chiperAlgo, $keyAes, $options, $ivAes );
       $id2 = openssl_encrypt($_POST['id'], $chiperAlgo, $keyAes, $options, $ivAes );
-
+      
       $query = "UPDATE agen SET
       id = '$id',
-      nama_alias = '$ttl', 
+      nama_alias = '$nama_alias', 
       jenis_kelamin = '$jenis_kelamin',
       jabatan = '$jabatan', 
-      penempatan = '$penempatan_tugas',
-      '', 
-      '',
+      penempatan = '$penempatan_tugas', 
       gambar = '$gambar',
+      nama_asli = '$nama_asli',
       id2 = '$id2'
       WHERE id = '$id'";
-      
+  
 
 mysqli_query($conn, $query);
 

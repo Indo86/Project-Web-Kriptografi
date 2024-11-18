@@ -1,3 +1,18 @@
+<?php 
+session_start();
+include("../connect.php");
+$id = $_SESSION['id'];
+
+if(!isset($_SESSION["loginAgen"])){
+  header("Location: ../loginAgen.php");
+  exit;
+}
+
+
+
+?>
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -80,21 +95,12 @@
         <a href="#" class="list-group-item list-group-item-action py-2 ripple active" aria-current="true">
         <i class="bi bi-archive-fill me-3"></i><span>Arsip Tugas</span>
         </a>
-        <a href="halamanPengumumanAgen.php" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="bi bi-megaphone-fill me-3"></i><span>Pengumuman</span>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="bi bi-file-earmark-lock me-3"></i><span>Enkripsi Dokumen</span>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="bi bi-file-earmark-post me-3"></i><span>Dekripsi Dokumen</span>
-        </a>
         <a href="halamanProfileAgen.php" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-person-bounding-box me-3"></i><span>Profil</span>
         </a>
-        <div class="d-grid gap-2 col-10 mx-auto mt-5">
+        <a href="logoutAgen.php" style="text-decoration:none;" class="d-grid gap-2 col-10 mx-auto mt-5">
           <button class="btn btn-danger text-light" type="button">Log Out</button>
-        </div>
+        </a>
       </div>
     </div>
   </div>

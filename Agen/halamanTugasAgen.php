@@ -1,3 +1,70 @@
+<?php 
+session_start();
+include("../connect.php");
+$id = $_SESSION['id'];
+
+if(!isset($_SESSION["loginAgen"])){
+  header("Location: ../loginAgen.php");
+  exit;
+}
+
+// Fungsi dekripsi AES
+function decryptAES($data, $key, $iv, $chiperAlgo, $options) {
+  return openssl_decrypt($data, $chiperAlgo, $key, $options, $iv);
+}
+
+
+function caesarEncrypt($data, $shift) {
+  $result = "";
+  for ($i = 0; $i < strlen($data); $i++) {
+      $char = $data[$i];
+      if (ctype_alpha($char)) {
+          $shifted = ord($char) + $shift;
+          if (ctype_lower($char)) {
+              if ($shifted > ord('z')) {
+                  $shifted -= 26;
+              }
+          } elseif (ctype_upper($char)) {
+              if ($shifted > ord('Z')) {
+                  $shifted -= 26;
+              }
+          }
+          $result .= chr($shifted);
+      } else {
+          $result .= $char;
+      }
+  }
+  return $result;
+}
+
+// // Fungsi dekripsi Caesar Cipher
+function decryptCaesar($data, $shift) {
+  return caesarEncrypt($data, 26 - $shift);  // Dekripsi dengan menggeser terbalik
+}
+
+// Super dekripsi (AES + Caesar Cipher)
+function superDecrypt($data, $key, $iv, $chiperAlgo, $options, $caesarShift) {
+  // Dekripsi pertama dengan Caesar Cipher
+  $decryptedCaesar = decryptCaesar($data, $caesarShift);
+  
+  // Dekripsi kedua dengan AES
+  return decryptAES($decryptedCaesar, $key, $iv, $chiperAlgo, $options);
+}
+
+
+
+$keyAes = 'makanmakanmakanp';
+$ivAes = '12345678abcdefgh';
+$chiperAlgo = 'AES-128-CBC';
+$options = 0;
+$caesarShift = 3; // Misalnya geser 3 untuk Caesar Cipher
+
+
+?>
+
+
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -80,21 +147,13 @@
         <a href="halamanArsipTugasAgen.php" class="list-group-item list-group-item-action py-2 ripple">
         <i class="bi bi-archive-fill me-3"></i><span>Arsip Tugas</span>
         </a>
-        <a href="halamanPengumumanAgen.php" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="bi bi-megaphone-fill me-3"></i><span>Pengumuman</span>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="bi bi-file-earmark-lock me-3"></i><span>Enkripsi Dokumen</span>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="bi bi-file-earmark-post me-3"></i><span>Dekripsi Dokumen</span>
-        </a>
+
         <a href="halamanProfileAgen.php" class="list-group-item list-group-item-action py-2 ripple" >
           <i class="bi bi-person-bounding-box me-3"></i><span>Profil</span>
         </a>
-        <div class="d-grid gap-2 col-10 mx-auto mt-5">
+        <a href="logoutAgen.php" style="text-decoration:none;" class="d-grid gap-2 col-10 mx-auto mt-5">
           <button class="btn btn-danger text-light" type="button">Log Out</button>
-        </div>
+        </a>
       </div>
     </div>
   </div>
@@ -124,7 +183,8 @@
         <thead class="table-primary">
           <tr>
             <th scope="col">No</th>
-            <th scope="col">Tanggal</th>
+            <th scope="col">Tanggal Mulai</th>
+            <th scope="col">Target Selesai</th>
             <th scope="col">Judul</th>
             <th scope="col">Perwira</th>
             <th scope="col">Status</th>
@@ -132,21 +192,41 @@
           </tr>
         </thead>
         <tbody>
+        <?php 
+          $no = 1;
+          $queriTugas = "SELECT * FROM tugas WHERE id_agen = '$id'";
+          $resultTugas = mysqli_query($conn, $queriTugas);
+
+
+          while( $tugas = mysqli_fetch_assoc($resultTugas)){
+            // digunakan untuk mencari agen yang menerima tugas
+            $idPemberiTugas = $tugas['id_perwira'];
+            $queriPerwira = "SELECT * FROM perwira WHERE id = '$idPemberiTugas'";
+            $resultPerwira = mysqli_query($conn, $queriPerwira);
+            $perwira = mysqli_fetch_assoc($resultPerwira);
+          
+          ?>
           <tr>
-            <th scope="row">1</th>
-            <td>11-11-2024</td>
-            <td>Operasi Tangkap Tangan Koruptor</td>
-            <td>Mayor Jend. Agus Subiyanto</td>
+            <th scope="row"><?= $no++; ?></th>
+            <td><?= $tugas['tanggal_mulai']; ?></td>
+            <td><?= $tugas['tanggal_selesai'] ?></td>
+            <td><?= superDecrypt( $tugas['judul'], $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift) ?></td>
             <td>
-              <span class="badge bg-primary">Pending</span>
+              <?= openssl_decrypt($perwira['nama_alias'],$chiperAlgo,$keyAes, $options, $ivAes)?>
             </td>
             <td>
-            <a href="#" style="text-decoration:none">
+              <span class="badge bg-primary"> <?=   $tugas['status'] = superDecrypt($tugas['status'], $keyAes, $ivAes, $chiperAlgo, $options, $caesarShift);?> </span>
+            </td>
+            <td>
+            <a href="halamanDetailDataTugas.php?kode=<?= $tugas['kode'] ?>" style="text-decoration:none">
+                <button type="button" class="btn btn-outline-primary">Detail</button>
+            </a>
+            <a href="halamanKerjakanTugas.php?kode=<?=$tugas['kode'] ?>" style="text-decoration:none">
                 <button type="button" class="btn btn-outline-warning">Kerjakan</button>
             </a>
             </td>
           </tr>
-
+          <?php } ?>
         </tbody>
       </table>
     </div>
