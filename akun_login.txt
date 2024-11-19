@@ -1,0 +1,52 @@
+==============================================
+			Agen
+==============================================
+
+1. 
+ID 123019237107
+Nama Asli: Slamet Diah Pitaloka
+Nama Alias: Michael Harahap
+Jenis Kelamin: Laki-laki
+Jabatan: Agen
+Penempatan Tugas: Inggris Raya
+Unik: 12345678CilukBa
+Password: 12345678
+--------------------------------------------
+2.
+ID 123019237111
+Nama Asli : Akbar Tanjung
+Nama Alias: Jacob Van Cobus
+Unik: suka makan bakso
+password: admin123
+
+-------------------------------------------
+3. 
+ID 17772920129301
+Nama Asli : Alexander Setiawan
+Nama Alias: Arka Navaro
+Unik: Awas belakangmu ada S
+password: admin787
+
+
+==============================================
+			Perwira
+==============================================
+
+
+1. ID 918403481
+Nama Asli Dewi Sandra
+Nama Alias Jhonatan Crhisty
+Jenis Kelamin
+Jabatan Perwira
+Penempatan Tugas Australia
+Unik -> makan nasi padang bundo
+Password -> admin456
+--------------------------------------------
+ID: 238947123
+Nama Asli: Rina Kartika
+Nama Alias: Albert Stone
+Jenis Kelamin: Perempuan
+Jabatan: Perwira
+Penempatan Tugas: Jepang
+Unik: Suka makan durian
+Password: perwira123
