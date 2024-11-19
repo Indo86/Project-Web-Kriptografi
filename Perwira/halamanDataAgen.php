@@ -98,9 +98,6 @@ $options = 0;
         <a href="halamanTugasPerwira.php" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-list-task me-3"></i><span>Tugas</span>
         </a>
-        <a href="halamanArsipTugasPerwira.php" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="bi bi-archive-fill me-3"></i><span>Arsip Tugas</span>
-        </a>
         <a href="halamanDataPerwira.php" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-bookmark-star me-3"></i><span>Data Perwira</span>
         </a>

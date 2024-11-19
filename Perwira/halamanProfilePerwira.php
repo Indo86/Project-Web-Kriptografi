@@ -9,15 +9,15 @@ if(!isset($_SESSION["loginPerwira"])){
 }
 
 
-$queriPerwira = "SELECT * FROM perwira WHERE id = '$id'";
-$result = mysqli_query($conn, $queriPerwira);
-$perwira = mysqli_fetch_assoc($result);
-
-
 $keyAes = 'makanmakanmakanp';
 $ivAes = '12345678abcdefgh';;
 $chiperAlgo= 'AES-128-CBC';
 $options = 0;
+
+$queriPerwira = "SELECT * FROM perwira WHERE id = '$id'";
+$result = mysqli_query($conn, $queriPerwira);
+$perwira = mysqli_fetch_assoc($result);
+
 
 
 
@@ -104,9 +104,6 @@ $options = 0;
         <a href="halamanTugasPerwira.php" class="list-group-item list-group-item-action py-2 ripple">
           <i class="bi bi-list-task me-3"></i><span>Tugas</span>
         </a>
-        <a href="halamanArsipTugasPerwira.php" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="bi bi-archive-fill me-3"></i><span>Arsip Tugas</span>
-        </a>
         <a href="halamanDataPerwira.php" class="list-group-item list-group-item-action py-2 ripple">
         <i class="bi bi-bookmark-star me-3"></i><span>Data Perwira</span>
         </a>
@@ -155,12 +152,11 @@ $options = 0;
       </div>
           <div class="card-body">
             <div class="col-12">
-                  <div class="img-profile d-flex justify-content-center mb-3">
+            <div class="img-profile d-flex justify-content-center mb-3">
                       <div class="card shadow-sm" style="width: 20rem;">
-                          <img src="../Assets/img/<?=  openssl_decrypt($perwira['gambar'],$chiperAlgo,$keyAes, $options, $ivAes) ?>" class="card-img-top" alt="...">
+                          <img src="../Assets/img/<?= openssl_decrypt($perwira['gambar'],$chiperAlgo,$keyAes, $options, $ivAes)?>" class="card-img-top" alt="...">
                       </div>
                   </div>
-            
                    <div class="row">
                       <div class=" col-5 grid gap-4" >
                         <p class="fw-bold">ID</p>
